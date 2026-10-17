@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Festo Cross-Sell Flipbook</title><style>
 :root{--blue:#0091dc;--navy:#12295a;--mute:#5f6f85;--line:#e1e8f2;--card:#fff;--pill:#dce9f8;--c:var(--blue);box-sizing:border-box}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
@@ -288,6 +289,14 @@ nav [hidden]{display:none!important}
       <div><dt>Double-acting</dt><dd>Air pushes both ways. The most common type.</dd></div>
       <div><dt>Cushioning</dt><dd>Slows the piston at the end of travel so it doesn't bang.</dd></div>
       <div><dt>ISO 15552</dt><dd>A standard size, so cylinders from different makers swap over.</dd></div>
+      <div><dt>Piston rod</dt><dd>The bar that moves in and out and does the work.</dd></div>
+      <div><dt>Rod eye / clevis</dt><dd>Fitting for the piston rod to connect the cylinder to something.</dd></div>
+      <div><dt>WH</dt><dd>Distance from the end of the cylinder to the start of the piston rod thread.</dd></div>
+      <div><dt>Magnetic piston</dt><dd>A magnet inside the piston so a sensor can detect it. Needed for proximity sensors.</dd></div>
+      <div><dt>Side load</dt><dd>A sideways force on the rod. Too much wears the cylinder out.</dd></div>
+      <div><dt>Guided cylinder</dt><dd>Extra guide rods stop twisting and take side load (DFM).</dd></div>
+      <div><dt>Rodless / linear drive</dt><dd>A carriage runs along the body, with no rod sticking out (DGC).</dd></div>
+      <div><dt>Mounting</dt><dd>How the cylinder is fixed, for example foot, flange, trunnion or clevis.</dd></div>
     </dl>
     <div class="grp">Valves</div>
     <dl>
@@ -300,6 +309,11 @@ nav [hidden]{display:none!important}
       <div><dt>Coil voltage</dt><dd>The voltage that switches the valve. 24 V DC is the most common.</dd></div>
       <div><dt>Manual override</dt><dd>A button to switch the valve by hand when testing.</dd></div>
       <div><dt>Valve terminal</dt><dd>Several valves on one base with one electrical connection.</dd></div>
+      <div><dt>Port numbers</dt><dd>1 is the supply, 2 and 4 go to the cylinder, 3 and 5 are exhausts.</dd></div>
+      <div><dt>Pilot-operated</dt><dd>A small air signal helps switch the valve, so the coil can be small.</dd></div>
+      <div><dt>Flow rate (l/min)</dt><dd>How much air the valve passes. Too low makes the cylinder slow.</dd></div>
+      <div><dt>Manifold / sub-base</dt><dd>A block that several valves bolt onto to share the air supply.</dd></div>
+      <div><dt>Mechanically operated</dt><dd>Switched by a lever, roller or button instead of electricity.</dd></div>
     </dl>
     <div class="grp">Air and connections</div>
     <dl>
@@ -313,6 +327,15 @@ nav [hidden]{display:none!important}
       <div><dt>Tube OD</dt><dd>Outside diameter of the tube. Must match the fitting.</dd></div>
       <div><dt>Flow control</dt><dd>Restricts the air to set how fast the cylinder moves.</dd></div>
       <div><dt>Silencer</dt><dd>Quietens the air as it exhausts.</dd></div>
+      <div><dt>Air quality (ISO 8573-1)</dt><dd>The standard grading for how clean and dry the air is.</dd></div>
+      <div><dt>Dew point / dryer</dt><dd>The temperature at which water drops out of the air. A dryer removes that water.</dd></div>
+      <div><dt>Condensate drain</dt><dd>Lets collected water out of a filter, either by hand or automatically.</dd></div>
+      <div><dt>Lubricated vs oil-free</dt><dd>Most modern parts run on dry air. Once a system has been oiled, it must stay oiled.</dd></div>
+      <div><dt>Soft-start valve</dt><dd>Builds pressure slowly at switch-on so the machine doesn't jump.</dd></div>
+      <div><dt>Shut-off / lockout valve</dt><dd>Cuts off and vents the air for safe maintenance.</dd></div>
+      <div><dt>Non-return valve</dt><dd>Lets air flow one way only.</dd></div>
+      <div><dt>R / NPT thread</dt><dd>Tapered threads. Don't mix them with G threads.</dd></div>
+      <div><dt>Leaks</dt><dd>Escaping air, which costs money in compressor electricity.</dd></div>
     </dl>
     <div class="grp">Sensors and electrics</div>
     <dl>
@@ -322,6 +345,20 @@ nav [hidden]{display:none!important}
       <div><dt>PLC</dt><dd>The controller that runs the machine.</dd></div>
       <div><dt>Fieldbus</dt><dd>A network linking devices to the PLC, for example PROFINET or EtherNet/IP.</dd></div>
       <div><dt>IO-Link</dt><dd>A smart connection that sends settings and diagnostics as well as the signal.</dd></div>
+      <div><dt>Reed vs electronic sensor</dt><dd>SME is reed and SMT is electronic, with a longer life.</dd></div>
+      <div><dt>Analogue output</dt><dd>A variable signal (4–20 mA or 0–10 V) rather than just on/off.</dd></div>
+      <div><dt>IP rating</dt><dd>Protection against dust and water. IP65 and IP67 are common.</dd></div>
+      <div><dt>2-wire / 3-wire</dt><dd>How the sensor is wired. It must match the machine.</dd></div>
+    </dl>
+    <div class="grp">Electric drives</div>
+    <dl>
+      <div><dt>Axis</dt><dd>One direction of movement.</dd></div>
+      <div><dt>Spindle vs toothed belt</dt><dd>A spindle is precise and strong. A belt is fast and covers long distances.</dd></div>
+      <div><dt>Servo / stepper motor</dt><dd>A servo is fast and accurate, using feedback. A stepper is simpler and cheaper.</dd></div>
+      <div><dt>Motor controller</dt><dd>The unit that powers and controls the motor.</dd></div>
+      <div><dt>Encoder</dt><dd>Tells the controller where the motor is.</dd></div>
+      <div><dt>Repeatability</dt><dd>How precisely the drive returns to the same spot.</dd></div>
+      <div><dt>Homing</dt><dd>Finding the start point after power-up.</dd></div>
     </dl>
     <div class="grp">Process and vacuum</div>
     <dl>
@@ -331,6 +368,21 @@ nav [hidden]{display:none!important}
       <div><dt>Media</dt><dd>The liquid or gas flowing through a process valve.</dd></div>
       <div><dt>Ejector</dt><dd>Makes vacuum from compressed air.</dd></div>
       <div><dt>ATEX</dt><dd>Rules for equipment in explosive atmospheres. Always pass to technical support.</dd></div>
+      <div><dt>Spring-return actuator / fail-safe</dt><dd>A spring moves the valve to a safe position if the air fails.</dd></div>
+      <div><dt>Ball / butterfly valve</dt><dd>The common types of process valve.</dd></div>
+      <div><dt>Sensor box</dt><dd>Shows whether the actuator is open or closed.</dd></div>
+      <div><dt>Suction cup</dt><dd>The rubber cup that holds the part.</dd></div>
+      <div><dt>Vacuum level (-kPa / %)</dt><dd>How strong the suction is.</dd></div>
+      <div><dt>Air-saving function</dt><dd>The ejector switches off once the vacuum is holding.</dd></div>
+      <div><dt>Blow-off pulse</dt><dd>A puff of air that releases the part.</dd></div>
+    </dl>
+    <div class="grp">Ordering and service</div>
+    <dl>
+      <div><dt>Configurable product</dt><dd>Built to order from a set of options, so check the lead time.</dd></div>
+      <div><dt>Core range</dt><dd>Festo's fast-delivery range, marked with a star on festo.com.</dd></div>
+      <div><dt>Wear parts / repair kit</dt><dd>Seals and similar parts for refurbishing instead of replacing.</dd></div>
+      <div><dt>Successor product</dt><dd>The replacement for a discontinued part.</dd></div>
+      <div><dt>UKCA / CE</dt><dd>The conformity marks for the UK and EU markets.</dd></div>
     </dl>
   </div>
   <p class="note" id="bx-gnone" hidden>No term matches. Try a shorter word.</p>
@@ -513,4 +565,6 @@ html,body{height:100%;height:100dvh;height:var(--app-h,100dvh)}
   addEventListener('pageshow',setH);
 })();
 </script>
+</body></html>
+
 </body></html>
