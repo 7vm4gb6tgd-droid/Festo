@@ -58,6 +58,14 @@ code,.mono{font-family:Consolas,"Roboto Mono",ui-monospace,monospace}
 .go.sm{min-height:44px;font-size:15px}
 
 /* hub */
+.tile.sup.wide{grid-column:1/-1;background:var(--navy);border-color:var(--navy)}
+.tile.sup.wide b{color:#fff}.tile.sup.wide small{color:#c9d6e8}
+.tile.sup.wide .glow{width:16%}.tile.sup.wide svg{stroke:#fff}
+.m2 .nd.ti{display:grid;place-items:center;overflow:visible}
+.m2 .nd{overflow:visible}
+.m2 .nd img{border-radius:50%}
+.m2 .nl{position:absolute;left:50%;top:calc(100% + 3px);transform:translateX(-50%);white-space:nowrap;font:700 11px var(--font);color:var(--navy);background:#fff;padding:1px 6px;border-radius:8px}
+.m2 .nl.nr{left:calc(100% + 4px);top:50%;transform:translateY(-50%)}
 .hero{background:var(--navy);color:#fff;border-radius:14px;padding:13px 16px}
 .hero h2{color:#fff;font-size:22px}
 .hero p{margin-top:5px;font-size:14px;line-height:1.35;opacity:.9}
@@ -310,7 +318,10 @@ var P={
  sliders:'<path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="9" r="2"/><circle cx="12" cy="15" r="2"/><circle cx="19" cy="8" r="2"/>',
  grid:'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
  ext:'<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/>',
- tools:'<path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2.5"/>'
+ tools:'<path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2.5"/>',
+ ruler:'<path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
+ cube:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/>',
+ compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'
 };
 function ic(n,s,c){s=s||22;return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="'+(c||'#12295a')+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+P[n]+'</svg>'}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -350,9 +361,9 @@ function tools(list){return '<div class="grp">Tools that help</div><div class="c
 
 /* ---------- product categories ---------- */
 var CATS=[
- {k:'cyl',n:'Cylinders',s:'ADN · DSNU · DSBC',m:'dsbc_s'},
  {k:'fit',n:'Fittings',s:'Push-in · part numbers',m:'qs'},
- {k:'tube',n:'Tubing',s:'PUN-H · PAN · PTFEN',m:'pun'},
+ {k:'tube',n:'Tubing',s:'PUN-H colours and packs',m:'pun'},
+ {k:'cyl',n:'Cylinders',s:'ADN · DSNU · DSBC',m:'dsbc_s'},
  {k:'valve',n:'Valves',s:'Solenoid · manual · flow',m:'valve'},
  {k:'air',n:'Air preparation',s:'Filters · regulators',m:'airprep'},
  {k:'vt',n:'Valve terminals',s:'Many valves, one connection',m:'vt'},
@@ -381,25 +392,33 @@ function add(key,s,p,html,cls){PAGES.push({key:key,s:s,p:p,html:html,cls:cls||''
 
 /* cover */
 (function(){
- var nodes=[['dsbc_s','cyl'],['valve','valve'],['airprep','air'],['sensor','sen'],['qs','fit'],['vt','vt']];
+ var nodes=[['i','chat','tools-help','Get help'],['i','ruler','tools-size','Size and select'],['i','cube','tools-design','Design and CAD'],['m','tube_reel','tube','Tubing'],['m','qs','fit','Fittings'],['i','key','pkey','Product key']];
  var pos=[[170,41],[282.6,93],[282.6,197],[170,249],[57.4,197],[57.4,93]];
  var lines=pos.map(function(p){return '<line x1="170" y1="145" x2="'+p[0]+'" y2="'+p[1]+'"/>'}).join('');
- var nd=nodes.map(function(n,ix){return '<button class="nd" data-go="'+n[1]+'" style="left:'+pos[ix][0]+'px;top:'+pos[ix][1]+'px" aria-label="'+n[1]+'">'+im(n[0],'')+'</button>'}).join('');
+ var nd=nodes.map(function(n,ix){return '<button class="nd'+(n[0]=='i'?' ti':'')+'" data-go="'+n[2]+'" style="left:'+pos[ix][0]+'px;top:'+pos[ix][1]+'px" aria-label="'+n[3]+'">'+(n[0]=='i'?ic(n[1],32,'#0091dc'):im(n[1],''))+'<span class="nl'+(ix===0?' nr':'')+'">'+n[3]+'</span></button>'}).join('');
  add('cover','Festo','Tools guide',
-  '<h2>Festo tools<br>and products</h2>'+
-  '<p>The Festo online tools and our core product ranges in one place. Find the right tool, check a product family, open its data sheet.</p>'+
-  '<div class="tagl"><span>Listen. Ask. Find the right part.</span><i></i></div>'+
+  '<h2>Festo tools<br>at your fingertips</h2>'+
+  '<p>Sizing, design and support tools from Festo, the product key, and quick part numbers for fittings and tubing. Find the right tool for the customer in a few taps.</p>'+
+  '<div class="tagl"><span>Listen. Ask. Use the right tool.</span><i></i></div>'+
   '<div class="m2"><div class="dg"><svg class="ln" width="340" height="290" aria-hidden="true"><ellipse cx="170" cy="145" rx="130" ry="104" fill="none" stroke="#dfe5ea" stroke-width="1.5" stroke-dasharray="3 5"/><g stroke="#0091dc" stroke-width="1.5" opacity=".55">'+lines+'</g></svg>'+nd+'<div class="ct">'+im('logo','Festo')+'</div></div></div>'+
   '<button class="go" data-go="hub">Open the guide →</button>'+
   '<button class="go alt sm" id="savehome">Save to my phone</button>','cover');
 })();
 
 /* hub */
+function stile(key,icn,name,sub,wide){return '<button class="tile sup'+(wide?' wide':'')+'" data-go="'+key+'"><span class="glow">'+ic(icn,34)+'</span><span class="tx"><b>'+name+'</b><small>'+sub+'</small></span></button>'}
 add('hub','Festo','Categories',
- '<div class="hero"><h2>What do you need?</h2><p>Online tools and the product key first, then the product ranges.</p></div>'+
+ '<div class="hero"><h2>What do you need?</h2><p>Start with the online tools, or go straight to a product range.</p></div>'+
+ '<div class="grp">Online tools</div>'+
  '<div class="grid">'+
-  '<button class="tile sup" data-go="tools"><span class="glow">'+ic('tools',36)+'</span><span class="tx"><b>Online tools</b><small>Sizing · support · CAD</small></span></button>'+
-  '<button class="tile sup" data-go="pkey"><span class="glow">'+ic('key',36)+'</span><span class="tx"><b>Product key</b><small>Read a Festo label</small></span></button>'+
+  stile('tools','compass','Which tool?','Start from the customer’s question',true)+
+  stile('tools-help','chat','Help and support','Virtual Assistant · tech support')+
+  stile('tools-size','ruler','Size and select','Pneumatic · electric · handling')+
+  stile('tools-design','cube','Design and CAD','3D configurator · CAD · FluidDraw')+
+  stile('pkey','key','Product key','Read a Festo label')+
+ '</div>'+
+ '<div class="grp">Products</div>'+
+ '<div class="grid">'+
   CATS.map(function(c){return '<button class="tile" data-go="'+c.k+'"><span class="glow">'+im(c.m,'')+'</span><span class="tx"><b>'+c.n+'</b><small>'+c.s+'</small><span class="cnt" data-cnt="'+c.k+'"></span></span></button>'}).join('')+
  '</div>');
 
@@ -453,7 +472,7 @@ add('pkey','Product key','Reading a Festo label',
  '</ol>'+
  '<div class="tip"><strong>Label worn or missing?</strong>Ask for a photo of the whole product and any marks on it, with sizes. Technical support can often identify it from that.</div>'+
  '<a class="go" href="'+T.pks.u+'" target="_blank" rel="noopener">Open Product Key search '+ic('ext',18,'#fff')+'</a>'+
- back([['cyl','Next: cylinders →'],['hub','Back to categories']]).replace('class="go"','class="go alt"'));
+ back([['fit','Next: fittings →'],['hub','Back to categories']]).replace('class="go"','class="go alt"'));
 
 /* ---- Cylinders ---- */
 add('cyl','Cylinders','Overview',
@@ -504,7 +523,7 @@ add('cyl-dsbc','Cylinders','DSBC profile',
  '<div class="grp">Common accessories</div>'+bl(['Foot mount, flange mount, single or double rear clevis (by bore)','Cylinder switch PNP/NPN 0.3 m M8: <b>8059120</b>, 2.5 m open: <b>8059121</b>','Rod eye, rod clevis, self-aligning rod coupler','Guide unit, bellows kit, position transmitter'])+
  tools(['dt3d','psize','pconf'])+
  dsBox('cyl-dsbc','DSBC')+
- back([['fit','Next: fittings →'],['cyl','Back to cylinders']]));
+ back([['valve','Next: valves →'],['cyl','Back to cylinders']]));
 
 /* ---- Fittings ---- */
 var FGROUPS=[['thr','Fittings with a thread','Screw into a port; the tube pushes in.'],['dist','Distributors','One thread in, several tubes out.'],['con','Tube to tube connectors','Join, split or reduce tubes, or blank one off.'],['mini','Mini series QSM','For 2 to 6 mm tube and M3 to M8 threads.'],['npqh','NPQH metal fittings','Brass, chemically nickel-plated.'],['flow','Flow control and check valves','Set cylinder speed, or hold it in position.']];
@@ -578,7 +597,7 @@ add('tube','Tubing','Tubing',
  '<div class="grp">Other tubing materials</div><div class="cgrp">'+
   combo('pun','<code>PEN</code> + QS',['−10–60 °C','10 bar'],'Good value. Easy to fit, tight bending radii, hard-wearing in moving applications.')+
   combo('pun','<code>PAN</code> + QS',['−10–80 °C','14 bar'],'For higher pressure and temperature in standard applications.')+
-  combo('ptfen','<code>PTFEN</code> + NPCK',['−20–120 °C','12 bar'],'PTFE: resists almost all chemicals and cleaning agents. FDA compliant, TSE free. Tubing alone rated to 150 °C.')+
+  combo('pun','<code>PTFEN</code> + NPCK',['−20–120 °C','12 bar'],'PTFE: resists almost all chemicals and cleaning agents. FDA compliant, TSE free. Tubing alone rated to 150 °C.')+
   combo('pun','<code>PFAN</code> + NPQH',['0–150 °C','16 bar'],'High temperature, food-safe, FDA-listed.')+
   combo('pun','<code>PUN-H-F</code> + NPQR',['−20–60 °C','10 bar'],'Food-safe to EC 1935/2004. Hydrolysis-resistant.')+
   combo('pun','<code>PLN</code> + NPQP',['−20–60 °C','10 bar'],'Food zone, resists cleaning agents, economical.')+
@@ -587,7 +606,7 @@ add('tube','Tubing','Tubing',
  ask(['Tube outside diameter','Colour','Box (50 m) or reel','Pressure and temperature','Anything special: food, chemicals, welding, moving cables'])+
  tools(['media','shop'])+
  dsBox('tube','Tubing')+
- back([['valve','Next: valves →'],['hub','Back to categories']]));
+ back([['cyl','Next: cylinders →'],['hub','Back to categories']]));
 
 /* ---- Other ranges: general overviews ---- */
 add('valve','Valves','Overview',
@@ -657,6 +676,8 @@ add('pa','Process automation','Overview',
  dsBox('pa','Process automation')+
  back([['hub','Back to categories']]));
 
+var ORDER=['cover','hub','tools','tools-help','tools-size','tools-design','pkey','fit','fit-find','fit-special','tube','cyl','cyl-adn','cyl-dsnu','cyl-dsbc','valve','air','vt','sen','vac','ele','pa'];
+PAGES.sort(function(a,b){return ORDER.indexOf(a.key)-ORDER.indexOf(b.key)});
 /* ---------- shell ---------- */
 var SHELL='<div id="app"><div class="card"><header><div class="ht"><b id="hs">FESTO</b><span id="hp"></span></div>'+im('logo','Festo')+'</header><div id="track"></div><div class="band">COMPLETE SOLUTIONS · HIGHER PERFORMANCE · GREATER RELIABILITY · ADDED VALUE</div></div>'+
  '<nav><button class="nb" id="bk">← Back</button><button class="hb" id="hm" aria-label="Categories"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12295a" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></button><div id="prog"><div id="bar"><i></i></div><span id="pn"></span></div><button class="nb" id="nx">Next →</button></nav>'+
