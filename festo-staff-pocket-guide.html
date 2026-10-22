@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Festo Staff Pocket Guide</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
@@ -14,6 +15,8 @@ header img{height:22px}
 h2{font-size:28px;line-height:1.1;font-weight:800;color:var(--navy)}
 .sub{color:var(--blue);font-size:15px;margin:5px 0 14px}
 .band{background:var(--blue);color:#fff;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:9px 6px}
+.band{font-size:12px;font-weight:600;letter-spacing:0;line-height:1.3;padding:8px 12px}
+.band a{color:inherit;font:inherit;text-decoration:none}
 nav{display:flex;align-items:center;gap:10px;padding:10px 2px calc(12px + env(safe-area-inset-bottom,0px))}
 .nb{font:700 16px inherit;font-family:inherit;border:0;color:#fff;background:linear-gradient(#1aa0ec,#0079bd);border-radius:26px;min-height:50px;padding:0 20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,145,220,.4)}.nb:disabled{opacity:.3}
 .hb{width:50px;height:50px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;cursor:pointer;flex:none}
@@ -598,7 +601,7 @@ Photo of label attached.</div><button class="btn alt wide" data-copy-from="tpl-t
   <p id="bx-fnone" class="note" hidden>No questions match. Try another word, or check the Jargon buster.</p>
   <button class="go" onclick="go(2)">Back to categories</button>
   <button class="go alt" onclick="go(21)">Back to Basics</button>
-</div></section></div><div class="band">COMPLETE SOLUTIONS · HIGHER PERFORMANCE · GREATER RELIABILITY · ADDED VALUE</div></div><nav><button class="nb bmk" id="bm" onclick="bookmark()" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-5-6 5z"/></svg>Bookmark</button><button class="nb" id="bk" onclick="go(i-1)">← Back</button><button class="hb" id="hm" onclick="go(0)" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12295a" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></button><div id="prog"><div id="bar"><i></i></div><span id="pn"></span></div><button class="nb" id="nx" onclick="go(i+1)">Next →</button></nav><div id="toast" role="status" aria-live="polite"></div></div><script>
+</div></section></div><div class="band">Always confirm details @ <a href="https://www.festo.com" target="_blank" rel="noopener">FESTO.com</a> before ordering any parts</div></div><nav><button class="nb bmk" id="bm" onclick="bookmark()" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-5-6 5z"/></svg>Bookmark</button><button class="nb" id="bk" onclick="go(i-1)">← Back</button><button class="hb" id="hm" onclick="go(0)" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12295a" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></button><div id="prog"><div id="bar"><i></i></div><span id="pn"></span></div><button class="nb" id="nx" onclick="go(i+1)">Next →</button></nav><div id="toast" role="status" aria-live="polite"></div></div><script>
 function fit(){var m=document.querySelector('.m2');if(!m)return;var d=m.firstChild;d.style.setProperty('--s',Math.min(m.clientWidth/340,m.clientHeight/290,1.2))}
 var i=0,tr=document.getElementById('track'),pg=[].slice.call(tr.children),N=pg.length;
 function go(n){if(n<0||n>=N)return;i=n;tr.style.transform='translateX(-'+n*100+'%)';var p=pg[n];p.scrollTop=0;var f=p.dataset.s=='Festo';document.getElementById('hs').textContent=f?p.dataset.p:p.dataset.s;document.getElementById('hp').textContent=f?'':p.dataset.p;document.getElementById('pn').textContent=(n+1)+'/'+N;document.querySelector('#bar i').style.width=((n+1)/N*100)+'%';document.getElementById('bk').disabled=n==0;document.getElementById('nx').disabled=n==N-1;var c=n==0;document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;var t=document.getElementById('bmt');if(t)t.classList.remove('on');try{history.replaceState(null,'','#'+n)}catch(e){}}
@@ -753,4 +756,6 @@ html,body{height:100%;height:100dvh;height:var(--app-h,100dvh)}
   });}
 })();
 </script>
+</body></html>
+
 </body></html>
