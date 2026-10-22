@@ -815,7 +815,7 @@ var NBC=Object.keys(NB.c).map(function(k){var s=k.split('|'),a=nbSplit(s[0]),b=n
 var NBP={};NB.p.forEach(function(r){var t=r[1].split('-'),k=t[1]+'|'+t[t.length-1];(NBP[k]=NBP[k]||{})[r[2]]={p:r[0],t:r[1],len:r[2],wt:r[3],core:!!r[4],pg:r[5]}});
 var NB_STEPS=[
  {f:'conn',l:'Connectors',o:{both:'Both ends (socket and plug)',sens:'Sensor end only, other end open',ctrl:'Controller end only, other end open'}},
- {f:'L',l:'Sensor end connector',o:{M8:'M8 socket, screw lock',M8C:'M8 socket, Ø8 mm snap-lock',M12:'M12 socket, screw lock',LE:'Open end (cut wires)'}},
+ {f:'L',l:'Sensor end connector',o:{M8:'M8 socket, screw lock, A-coded',M8C:'M8 socket, Ø8 mm snap-lock, A-coded',M12:'M12 socket, screw lock, A-coded',LE:'Open end (cut wires)'}},
  {f:'Lp',l:'Sensor end pins',lw:'Sensor end wires',o:{'3':'3','4':'4','5':'5'}},
  {f:'Lo',l:'Sensor end outlet',o:{G:'Straight',W:'Angled'}},
  {f:'D',l:'LED status indication',o:{'':'No LED',P:'LED, PNP N/O contact',N:'LED, NPN N/O contact'}},
