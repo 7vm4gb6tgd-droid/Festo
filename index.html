@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Festo Cross-Sell Flipbook</title><style>
 :root{--blue:#0091dc;--navy:#12295a;--mute:#5f6f85;--line:#e1e8f2;--card:#fff;--pill:#dce9f8;--c:var(--blue);box-sizing:border-box}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
@@ -112,6 +113,8 @@ header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8
 .codes{flex-wrap:wrap}
 .m2 .ct img{left:50%;top:50%;transform:translate(-50%,-50%);width:70%}
 header{display:flex;justify-content:space-between;align-items:center;gap:10px}header .ht{text-align:left}#app header img.fl{height:22px;justify-self:auto}@media(max-width:430px){header{padding:12px 18px}#app header img.fl{height:22px}}
+.band{font-size:12px;font-weight:600;letter-spacing:0;line-height:1.3;padding:8px 12px}
+.band a{color:#fff;font-weight:800;text-decoration:none}
 </style><style>
 /* Basics section: all rules scoped to .bx so the existing pages are untouched */
 .bx{--code:#1f5fb8;--ink:#33414f;--warnbg:#fff3cd;--warnfg:#7a5a00}
@@ -633,7 +636,7 @@ nav [hidden]{display:none!important}
   <p id="bx-fnone" class="note" hidden>No questions match. Try another word, or check the Jargon buster.</p>
   <button class="go" onclick="go(2)">Back to categories</button>
   <button class="go alt" onclick="go(41)">Back to Basics</button>
-</div></section></div><div class="band">COMPLETE SOLUTIONS · HIGHER PERFORMANCE · GREATER RELIABILITY · ADDED VALUE</div></div><nav><button class="nb bmk" id="bm" onclick="bookmark()" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-5-6 5z"/></svg>Bookmark</button><button class="nb" id="bk" onclick="go(i-1)">← Back</button><button class="hb" id="hm" onclick="go(0)" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12295a" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></button><div id="prog"><div id="bar"><i></i></div><span id="pn"></span></div><button class="nb" id="nx" onclick="go(i+1)">Next →</button></nav></div><script>
+</div></section></div><div class="band">Use tool to narrow down options – confirm details @ <a href="https://www.festo.com" target="_blank" rel="noopener">FESTO.com</a> before ordering</div></div><nav><button class="nb bmk" id="bm" onclick="bookmark()" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-5-6 5z"/></svg>Bookmark</button><button class="nb" id="bk" onclick="go(i-1)">← Back</button><button class="hb" id="hm" onclick="go(0)" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#12295a" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></button><div id="prog"><div id="bar"><i></i></div><span id="pn"></span></div><button class="nb" id="nx" onclick="go(i+1)">Next →</button></nav></div><script>
 function fit(){var m=document.querySelector('.m2');if(!m)return;var d=m.firstChild;d.style.setProperty('--s',Math.min(m.clientWidth/340,m.clientHeight/290,1.2))}
 var i=0,tr=document.getElementById('track'),pg=[].slice.call(tr.children),N=pg.length;
 function go(n){if(n<0||n>=N)return;i=n;tr.style.transform='translateX(-'+n*100+'%)';var p=pg[n];p.scrollTop=0;var f=p.dataset.s=='Festo';document.getElementById('hs').textContent=f?p.dataset.p:p.dataset.s;document.getElementById('hp').textContent=f?'':p.dataset.p;document.getElementById('pn').textContent=(n+1)+'/'+N;document.querySelector('#bar i').style.width=((n+1)/N*100)+'%';document.getElementById('bk').disabled=n==0;document.getElementById('nx').disabled=n==N-1;var c=n==0;document.querySelector('#app header').classList.toggle('cv',c);document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;var t=document.getElementById('bmt');if(t)t.classList.remove('on');try{history.replaceState(null,'','#'+n)}catch(e){}}
@@ -791,4 +794,6 @@ function renderTube(){var out=document.getElementById('tf-out');if(!out||!TUBE[t
 renderTube();
 })();
 </script>
+</body></html>
+
 </body></html>
