@@ -398,6 +398,9 @@ var P={
  cube:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/>',
  compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
  cable:'<path d="M3 7h4v4H3zM17 13h4v4h-4z"/><path d="M7 9h3a3 3 0 013 3v0a3 3 0 003 3h1"/>',
+ shock:'<path d="M3 12h5"/><rect x="8" y="8" width="9" height="8" rx="1"/><path d="M17 12h4M11 8v8M14 8v8"/>',
+ flow:'<path d="M3 8h12M3 16h12"/><path d="M15 5l4 3-4 3M15 13l4 3-4 3"/>',
+ aircon:'<path d="M12 3a6 6 0 016 6v6a6 6 0 01-12 0V9a6 6 0 016-6z"/><path d="M12 8v5l3 2"/>',
  pkf:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 6.5h6v11h-6"/><circle cx="17" cy="6.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/>',
  axk:'<rect x="2" y="8" width="7" height="8" rx="1"/><rect x="15" y="6" width="7" height="12" rx="1"/><path d="M9 12h6M11.5 9.5v5M13 10.5v3"/>'
 };
@@ -417,6 +420,9 @@ var T={
  shop:{n:'Festo online shop',d:'Prices, stock, data sheets and CAD on every product page.',u:'https://www.festo.com/gb/en',i:'cart'},
  media:{n:'Media resistance',d:'Check whether seals and materials will survive a chemical or cleaning agent.',u:'https://www.festo.com/gb/en/s/media-resistance',i:'flask'},
  psize:{n:'Pneumatic Sizing',d:'Enter three application values. Get up to three matched designs: precise, eco or performance.',u:'https://www.festo.com/gb/en/s/pneumatic-sizing/',m:'t_psize'},
+ shock:{n:'Shock absorber selection',d:'Enter the moving mass, speed and stroke. Get a matching shock absorber.',u:'https://www.festo.com/gb/en/s/shock-absorber',i:'shock'},
+ flow:{n:'Flow rate calculation',d:'Work out the flow rate from supply pressure, outlet pressure and tube size and length.',u:'https://www.festo.com/gb/en/s/flowrate-calculation',i:'flow'},
+ aircon:{n:'Air consumption of cylinders',d:'Calculate how much compressed air a cylinder uses, from bore, stroke, pressure and cycle rate.',u:'https://www.festo.com/gb/en/s/air-consumption',i:'aircon'},
  ems:{n:'Electric Motion Sizing',d:'Pick an electric axis, motor and controller from a few application inputs.',u:'https://www.festo.com/gb/en/s/electric-motion-sizing',m:'t_ems'},
  hgo:{n:'Handling Guide Online',d:'Choose a handling system type, enter the load and strokes, get simulated proposals with CAD.',u:'https://www.festo.com/ie/en/x/handling-guide-online',m:'t_hgo',x:'HGO'},
  grip:{n:'Gripper sizing',d:'Find a gripper for the part weight, size and grip force needed.',u:'https://www.festo.com/gb/en/s/gripper-sizing',i:'grip'},
@@ -517,9 +523,15 @@ add('tools-help','Online tools','Help and find a product',
  '<div class="grp">Find and identify</div><div class="list">'+['pks','docs','spc','shop','media'].map(toolRow).join('')+'</div>'+
  back([['tools-size','Next: size and select →'],['hub','Back to categories']]));
 
+function sgroup(t,items){return '<div class="grp">'+t+'</div><div class="list">'+items.join('')+'</div>'}
 add('tools-size','Online tools','Size and select',
  head('Size and select','Get the right size first time. Enter the application and let the tool do the maths.')+
- '<div class="list">'+['psize','ems','hgo','grip','vacd','co2','pvc','cab','pconf'].map(toolRow).join('')+'<button class="lk" data-go="axk"><span class="th ic">'+ic('axk',26)+'</span><span class="tx"><b>Axial kit finder</b><small>Which EAMM-A kit joins a Festo drive to a Festo or third-party motor.</small></span><span class="ar go3">›</span></button><button class="lk" data-go="pkf"><span class="th ic">'+ic('pkf',26)+'</span><span class="tx"><b>Parallel kit finder</b><small>Which EAMM-U kit mounts a Festo or third-party motor alongside a Festo drive.</small></span><span class="ar go3">›</span></button></div>'+
+ sgroup('Pneumatic or electric?',[toolRow('co2')])+
+ sgroup('Pneumatics',['psize','aircon','flow','shock'].map(toolRow))+
+ sgroup('Electric drives',['ems','hgo'].map(toolRow).concat(['<button class="lk" data-go="axk"><span class="th ic">'+ic('axk',26)+'</span><span class="tx"><b>Axial kit finder</b><small>Which EAMM-A kit joins a Festo drive to a Festo or third-party motor.</small></span><span class="ar go3">›</span></button>','<button class="lk" data-go="pkf"><span class="th ic">'+ic('pkf',26)+'</span><span class="tx"><b>Parallel kit finder</b><small>Which EAMM-U kit mounts a Festo or third-party motor alongside a Festo drive.</small></span><span class="ar go3">›</span></button>']))+
+ sgroup('Gripping and vacuum',['grip','vacd'].map(toolRow))+
+ sgroup('Check the environment',[toolRow('media')])+
+ sgroup('Configure to order',['pconf','pvc','cab'].map(toolRow))+
  '<div class="tip"><strong>When to hand over</strong>Safety functions, ATEX, food or pharma, heavy or vertical loads, or anything you would be guessing at. Send it to technical support with the details from the checklist.</div>'+
  back([['tools-design','Next: design and CAD →'],['hub','Back to categories']]));
 
