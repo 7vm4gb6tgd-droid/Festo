@@ -382,6 +382,9 @@ nav .hb{width:50px;height:50px}
 #ms-out{display:flex;flex-direction:column;gap:12px;scroll-margin-top:8px}
 #ms-form{scroll-margin-top:8px}
 
+/* smoother scrolling on phones */
+.pg{overscroll-behavior:contain}
+.pg.far{content-visibility:hidden}
 /* cover disclaimer */
 .disc{margin-top:8px;background:var(--pill);color:var(--navy);border-radius:10px;padding:8px 11px;font-size:12px;line-height:1.35}
 .disc b{font-weight:800}
@@ -1488,7 +1491,7 @@ function go(n){if(n<0||n>=N)return;cur=n;tr.style.transform='translateX(-'+n*100
  var f=p.s=='Festo';document.getElementById('hs').textContent=f?p.p:p.s;document.getElementById('hp').textContent=f?'':p.p;
  document.getElementById('pn').textContent=(n+1)+'/'+N;document.querySelector('#bar i').style.width=((n+1)/N*100)+'%';
  var c=n==0;document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;document.getElementById('nx').disabled=n==N-1;
- pg.forEach(function(x,ix){x.setAttribute('aria-hidden',ix==n?'false':'true');x.inert=ix!=n});
+ pg.forEach(function(x,ix){x.setAttribute('aria-hidden',ix==n?'false':'true');x.inert=ix!=n;x.classList.toggle('far',Math.abs(ix-n)>1)});
  if(n==0)fit();
 }
 function goKey(k){if(k in KEYIX)go(KEYIX[k])}
