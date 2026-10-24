@@ -382,6 +382,11 @@ nav .hb{width:50px;height:50px}
 #ms-out{display:flex;flex-direction:column;gap:12px;scroll-margin-top:8px}
 #ms-form{scroll-margin-top:8px}
 
+/* cover disclaimer */
+.disc{margin-top:8px;background:var(--pill);color:var(--navy);border-radius:10px;padding:8px 11px;font-size:12px;line-height:1.35}
+.disc b{font-weight:800}
+.disc a{color:inherit;font-weight:700}
+@media (max-height:690px){.disc{font-size:11px;padding:6px 9px;margin-top:4px}}
 /* part number finders (Guide to Pneumatic Installations) */
 .tile .glow img.lo{max-width:46px;max-height:40px}
 .pf .ft .fim{height:58px;width:100%;position:relative;display:block}
@@ -571,6 +576,7 @@ function add(key,s,p,html,cls){PAGES.push({key:key,s:s,p:p,html:html,cls:cls||''
   '<h2>Festo tools<br>at your fingertips</h2>'+
   '<p>Sizing, design and support tools from Festo, the product key, and quick part numbers for fittings and tubing. Find the right tool for the customer in a few taps.</p>'+
   '<div class="tagl"><span>Listen. Ask. Use the right tool.</span><i></i></div>'+
+  '<div class="disc" role="note"><b>Not an official Festo app.</b> An unofficial guide for sales conversations. Product details and part numbers may be incomplete or out of date. Always check on <a href="https://www.festo.com" target="_blank" rel="noopener">festo.com</a> before quoting or ordering.</div>'+
   '<div class="m2"><div class="dg"><svg class="ln" width="340" height="290" aria-hidden="true"><ellipse cx="170" cy="145" rx="130" ry="104" fill="none" stroke="#dfe5ea" stroke-width="1.5" stroke-dasharray="3 5"/><g stroke="#0091dc" stroke-width="1.5" opacity=".55">'+lines+'</g></svg>'+nd+'<div class="ct">'+im('logo','Festo')+'</div></div></div>'+
   '<button class="go" data-go="hub">Open the guide →</button>','cover');
 })();
