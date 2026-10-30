@@ -193,7 +193,7 @@ table.sz td{color:var(--navy);font-weight:600}
 /* fittings by shape + finder */
 .fgrp{display:flex;flex-direction:column;gap:8px}
 .fgrp .note{margin-top:-2px}
-.ftg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.ftg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}a.pnl{color:var(--code);text-decoration:underline;text-decoration-color:rgba(31,95,184,.4);text-underline-offset:2px}a.pnl::after{content:'\2197';font-size:.8em;margin-left:2px;text-decoration:none;display:inline-block}.pnx{display:inline-grid;place-items:center;width:30px;height:30px;vertical-align:middle;border-radius:8px;margin-left:2px}.pnx:hover{background:var(--pill)}.pnb{margin-top:8px}
 .ft{border:1px solid var(--line);border-radius:12px;background:#fff;padding:6px 5px 7px;display:flex;flex-direction:column;align-items:center;gap:1px;font:inherit;color:var(--navy);cursor:pointer;text-align:center;min-width:0}
 .ft .fim{height:50px;width:100%;position:relative;display:block}
 .ft .fim img,.fr .fim img,.ffh .fim img{position:absolute;inset:0;margin:auto;max-width:100%;max-height:100%}
@@ -693,14 +693,14 @@ function thumb(t){return t.m?'<span class="th">'+im(t.m,'')+'</span>':'<span cla
 function toolRow(k){var t=T[k];return '<a class="lk" href="'+t.u+'" target="_blank" rel="noopener">'+thumb(t)+'<span class="tx"><b>'+esc(t.n)+(t.x?'<em>'+esc(t.x)+'</em>':'')+'</b><small>'+esc(t.d)+'</small></span><span class="ar">'+ic('ext',18,'#0091dc')+'</span></a>'}
 function toolChip(k){var t=T[k];return '<a class="chip" href="'+t.u+'" target="_blank" rel="noopener"><i>'+(t.m?im(t.m,''):ic(t.i,16))+'</i>'+esc(t.n)+'</a>'}
 function pageChip(key,label,img){return '<button class="chip int" data-go="'+key+'"><i>'+(img?im(img,''):ic('key',16))+'</i>'+esc(label)+'</button>'}
-function tools(list){return '<div class="grp">Tools that help</div><div class="chips">'+list.map(function(k){return k.charAt(0)=='@'?pageChip(k.slice(1),'Product key','pkey'):toolChip(k)}).join('')+'</div>'}
+function tools(list){return '';return '<div class="grp">Tools that help</div><div class="chips">'+list.map(function(k){return k.charAt(0)=='@'?pageChip(k.slice(1),'Product key','pkey'):toolChip(k)}).join('')+'</div>'}
 
 /* ---------- product categories ---------- */
 var CATS=[
  {k:'fit',n:'Fittings',s:'Push-in · part numbers',m:'qs'},
  {k:'tube',n:'Tubing',s:'PUN-H colours and packs',m:'pun'},
- {k:'ms',n:'MS series',s:'MS4 · MS6 part numbers',m:'ms_combo'},
- {k:'air',n:'Air preparation',s:'Filters · regulators',m:'airprep'},
+ {k:'ms',n:'MS modules',s:'MS4 · MS6 part numbers',m:'ms_combo'},
+ {k:'air',n:'MS air prep',s:'Filters · regulators',m:'airprep'},
  {k:'cyl',n:'Cylinders',s:'ADN · DSNU · DSBC',m:'dsbc_s'},
  {k:'valve',n:'Valves',s:'Solenoid · manual · flow',m:'valve'},
  {k:'vtux',n:'VTUX',s:'Now 10 mm and 15 mm valves',m:'vtux'},
@@ -723,7 +723,15 @@ function ask(a){return '<div class="ask"><b>Ask the customer</b><ol>'+a.map(func
 function fam(key,img,name,sub){return '<button class="fam" data-go="'+key+'"><span class="im">'+im(img,name)+'</span><span class="tx"><b>'+name+'</b><small>'+sub+'</small></span><span class="ar">›</span></button>'}
 function vr(a){return '<div class="vt">'+a.map(function(r){return '<div class="vr"><code>'+r[0]+'</code><span>'+r[1]+(r[2]?'<small>'+r[2]+'</small>':'')+'</span></div>'}).join('')+'</div>'}
 function combo(img,title,spec,txt){return '<div class="combo"><span class="im">'+im(img,'')+'</span><span class="tx"><b>'+title+'</b><span class="spec">'+spec.map(function(s){return '<span>'+s+'</span>'}).join('')+'</span><small>'+txt+'</small></span></div>'}
-function dsBox(k,label){return '<section class="ds" data-k="'+k+'" data-l="'+esc(label)+'"></section>'}
+function pnUrl(pn){return 'https://www.festo.com/gb/en/a/'+pn+'/'}
+function catBtn(c){return '<a class="go alt sm" href="https://www.festo.com/catalogue/'+c.toLowerCase()+'" target="_blank" rel="noopener">'+c+' catalogue page '+ic('ext',16,'#0091dc')+'</a>'}
+function pnBig(pn){return '<a class="go alt sm pnb" href="'+pnUrl(pn)+'" target="_blank" rel="noopener">'+pn+' on Festo.com '+ic('ext',16,'#0091dc')+'</a>'}
+/* family catalogue buttons per page (same format as the gripper links) */
+var CATL={'cyl-dpdm':['DPDM'],'cyl-adn':['ADN'],'cyl-dsnu':['DSNU'],'cyl-dsbc':['DSBC'],'cyl-dfm':['DFM'],'cyl-crdng':['CRDNG'],'cyl-crdsnu':['CRDSNU'],
+ 'fit-special':['NPQH','NPQM','NPQR','NPQP','NPCK','CRQS','QS-V0','NPQE','NPQO'],'vac':['VN','OVEM'],'axk':['EAMM-A'],'pkf':['EAMM-U'],'neba':['NEBA']};
+function dsBox(k,label){var L=CATL[k];if(k==='air')return '<a class="go alt sm" href="https://www.festo.com/catalog/MS" target="_blank" rel="noopener">MS series catalogue page '+ic('ext',16,'#0091dc')+'</a>';
+ if(!L)return '';return (L.length>2?'<div class="grp">Catalogue pages</div>':'')+'<div class="back">'+L.map(catBtn).join('')+'</div>'}
+function dsBoxOld(k,label){return '<section class="ds" data-k="'+k+'" data-l="'+esc(label)+'"></section>'}
 function back(a){return '<div class="back">'+a.map(function(b,ix){return '<button class="go'+(ix?' alt':'')+'" data-go="'+b[0]+'">'+b[1]+'</button>'}).join('')+'</div>'}
 function generalNote(){return '<p class="note">General overview to help the conversation. Check the data sheet or the online shop before quoting a part number.</p>'}
 
@@ -752,12 +760,12 @@ function ptile(c){return '<button class="tile" data-go="'+c.k+'"><span class="gl
 var PNF=pfHub([{k:'axk',n:'Axial kits',s:'EAMM-A · drive to motor',m:'eamm_a'},{k:'pkf',n:'Parallel kits',s:'EAMM-U · motor alongside',m:'eamm_u'},{k:'neba',n:'Sensor cables',s:'NEBA · M8 / M12',m:'neba'}]);
 /* ---------- 2026 campaign: Ramp-Up targets ---------- */
 var CAMP=['DGSS','DRRS','DFPD','CMMT','ELGD','VTUX','VFOE','VTEP','VYKA/C','VEMD','CPX-AP-A','CMSH','DGRC'];
-function campTile(n,img,code,val,unit){return '<div class="cbt"><span class="cbn">M'+n+'</span><span class="cbi">'+im(img,code)+'</span><span class="cbc">'+code+'</span><b>'+val+'</b><em>'+unit+'</em></div>'}
+function campTile(n,img,code,val,unit){return '<div class="cbt"><span class="cbn">M'+n+'</span><span class="cbi">'+im(img,code)+'</span><span class="cbc">'+code+'</span><em>'+unit+'</em></div>'}
 function campPage(){var eye='<svg class="cbx" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="40"/><circle cx="60" cy="60" r="24"/><circle cx="60" cy="60" r="9" class="f"/></svg>';
  return '<div class="cbd">'+
   '<div class="cbh">'+eye+'<span class="cby">2026</span><span class="cbk">Ramp-Up campaign targets</span></div>'+
-  '<div class="cb1"><span class="cbl">Measure 1 · Company target</span><b>£1,720,575</b><span class="cbs">Total Ramp-Up product sales value</span></div>'+
-  '<div class="cbg">'+campTile(2,'cmmt','CMMT','1,000','units')+campTile(3,'camp_vtux','VTUX','1,500','terminals')+campTile(4,'pa','DFPD','1,200','actuators')+'</div>'+
+  '<div class="cb1"><span class="cbl">Measure 1 · Company target</span><span class="cbs">Total Ramp-Up product sales value</span></div>'+
+  '<div class="cbg">'+campTile(2,'cmmt','CMMT','','units')+campTile(3,'camp_vtux','VTUX','','terminals')+campTile(4,'pa','DFPD','','actuators')+'</div>'+
   '<div class="cbl cbl2">Ramp-Up product basket · 13 families</div>'+
   '<div class="cbf">'+CAMP.map(function(c){return '<span>'+c+'</span>'}).join('')+'</div>'+
   '<p class="cbn2">Measure 1 is the total sales value of the Ramp-Up products. Measures 2 to 4 are company unit targets.</p>'+
@@ -767,8 +775,10 @@ add('camp','Festo','2026 campaigns',
  campPage()+
  back([['hub','Back to categories']]));
 
+/* categories: one blended list, in the order Phil set */
+var HUB_ORDER=['air','ms','valve','vtux','cyl','pf-vac','pa','pf-tube','pf-push','pf-coup','pf-valve','pf-thread','pf-sil','pf-gauge','cysen','neba','psen','fsen','pxsen','gripper','ele','axk','pkf'];
+function hubTiles(){var all={};PNF.forEach(function(c){all[c.k]=c});CATS.forEach(function(c){if(!all[c.k])all[c.k]=c});if(all['pf-vac'])all['pf-vac']=Object.assign({},all['pf-vac'],{m:'vacuum',lo:false});return HUB_ORDER.filter(function(k){return all[k]}).map(function(k){return all[k]})}
 add('hub','Festo','Categories',
- '<div class="hero"><h2>What do you need?</h2><p>Start with the online tools, or go straight to a product range.</p></div>'+
  '<div class="grp">2026 campaigns</div>'+
  '<div class="grid"><button class="tile sup full" data-go="camp"><span class="glow">'+ic('target',34)+'</span><span class="tx"><b>Ramp-Up Product Basket</b><small>13 product families · campaign targets</small></span></button></div>'+
  '<div class="grp">Online tools</div>'+
@@ -778,13 +788,9 @@ add('hub','Festo','Categories',
   stile('tools-design','cube','Design and CAD','3D configurator · CAD · FluidDraw')+
   stile('pkey','key','Product key','Read a Festo label')+
  '</div>'+
- '<div class="grp">Part number finders</div>'+
- '<div class="grid">'+
-  PNF.map(ptile).join('')+
- '</div>'+
  '<div class="grp">Products</div>'+
  '<div class="grid">'+
-  CATS.filter(function(c){return c.k!=='fit'&&c.k!=='tube'&&c.k!=='ms'}).map(ptile).join('')+
+  hubTiles().map(ptile).join('')+
  '</div>');
 
 /* tools: which tool */
@@ -958,7 +964,7 @@ var PF_INTRO={
  vac:'Vacuum generators and suction cups. Tap one for its sizes and part numbers.',
  acc:'Sealing rings, tube cutters, tubing supports, pipe clamps and protective conduit. Tap one for its sizes and part numbers.'};
 var PF_NEXT={tube:['pf-push','Next: push-in fittings →'],push:['fit-special','Next: special fittings →'],thread:['pf-coup','Next: couplings →'],coup:['pf-valve','Next: flow control →'],valve:['pf-sil','Next: silencers →'],sil:['pf-vac','Next: vacuum →'],vac:['pf-gauge','Next: pressure gauges →'],gauge:['cyl','Next: cylinders →'],acc:['pf-other','Next: filters →'],other:['cyl','Next: cylinders →']};
-function pfCatPage(ci){var c=PFC[ci],id=c.id,gp=PF_GROUP[id],h=head(esc(c.n),esc(c.d))+'<p class="lead">'+esc(PF_INTRO[id])+'</p>';
+function pfCatPage(ci){var c=PFC[ci],id=c.id,gp=PF_GROUP[id],h=head(esc(c.n),esc(c.d))+'<p class="lead">'+esc(PF_INTRO[id])+'</p>'+(id==='gauge'?ggCta():'');
  var blocks=[],cur=null,lastH1=null;
  pfTypes(ci).forEach(function(t){var h1=t[gp[0]]||'',h2=gp[1]?(t[gp[1]]||''):'';if(!cur||cur.h1!==h1||cur.h2!==h2){cur={h1:h1,h2:h2,ts:[]};blocks.push(cur)}cur.ts.push(t)});
  blocks.forEach(function(b){var s1=b.h1!==lastH1;lastH1=b.h1;
@@ -977,6 +983,58 @@ function pfFindPage(ci){var c=PFC[ci],id=c.id,gp=PF_GROUP[id],og={},order=[];
   '<p class="note">'+(id==='vac'?'':'Pack is the number of pieces or metres in one order quantity (PE in the guide). ')+'<span class="pfstar">★</span> marks the guide’s star products: easy to select and quickly delivered.</p>'+
   back([PF_NEXT[id],['pf-'+id,'Back to '+(PF_TILE[id]||c.n).toLowerCase()]]);
 }
+
+/* ---------- pressure gauge selector: filters the gauges in the Guide to Pneumatic Installations step by step ----------
+   gauges certified for measuring devices in China (PAGN-...-CPA) are left out: in the guide their scale text and range columns disagree */
+var GGR=(function(){var ci=PFID.indexOf('gauge'),L=[];
+ PFT.forEach(function(t){if(t.c!==ci)return;
+  t.rows.forEach(function(r){var desc=r[5]||'';if(/China/.test(desc))return;
+   var sc={},o=[],d1='',mx={};
+   t.l.forEach(function(l,k){var v=String(r[6][k]||'').trim(),m=/\[(.+)\]/.exec(l);
+    if(m){if(v&&v!=='–'){var u=m[1],a=/^(-?[\d.]+)\s*-\s*(-?[\d.]+)$/.exec(v);sc[u]=a?a[1].replace('-','−')+' … '+a[2].replace('-','−'):v;mx[u]=a?+a[2]:0;o.push(u)}}
+    else if(l==='D1')d1=v.replace('Cart-ridge','Cartridge')});
+   var vac=/Vacuum/.test(t.g);
+   L.push({pn:r[1],code:t.code,g:t.g,size:+((/\d+/.exec(t.s)||[0])[0]),d1:d1,sc:sc,mx:mx,units:o,
+    k:vac?(mx.bar>0?'b':'v'):'p',
+    m:(/Flanged/.test(t.g)||/Front panel/.test(desc))?'panel':/^QS-/.test(d1)?'qs':/Cartridge/.test(d1)?'cart':'thread',
+    desc:desc})})});
+ return L})();
+var GG={on:0,k:'',m:'',u:'',r:'',c:'',s:''};
+var GGSTEPS=['k','m','u','r','c','s'];
+var GGLAB={k:{p:'Pressure',v:'Vacuum',b:'Vacuum and pressure'},m:{thread:'Screws in with a male thread',qs:'QS push-in connector, onto the tubing',cart:'Cartridge 10 mm',panel:'Front panel mounting'},u:{bar:'bar',psi:'psi',MPa:'MPa',inHg:'inHg'}};
+function ggMatch(upto){return GGR.filter(function(g){for(var i=0;i<upto;i++){var st=GGSTEPS[i],a=GG[st];if(a==='')continue;
+ if(st=='k'&&g.k!=a)return false;if(st=='m'&&g.m!=a)return false;if(st=='u'&&!g.sc[a])return false;
+ if(st=='r'&&g.sc[GG.u]!=a)return false;if(st=='c'&&g.d1!=a)return false;if(st=='s'&&String(g.size)!=a)return false}return true})}
+function ggOpts(st,ph){var i=GGSTEPS.indexOf(st),L=ggMatch(i),seen={},list=[];
+ if(st=='k'||st=='m'){var ord=Object.keys(GGLAB[st]);L.forEach(function(g){seen[g[st]]=1});list=ord.filter(function(v){return seen[v]}).map(function(v){return [v,GGLAB[st][v]]})}
+ else if(st=='u'){L.forEach(function(g){g.units.forEach(function(u){seen[u]=1})});list=['bar','psi','MPa','inHg'].filter(function(u){return seen[u]}).map(function(u){return [u,u]})}
+ else if(st=='r'){L.forEach(function(g){var v=g.sc[GG.u];if(v&&!seen[v]){seen[v]=1;list.push([v,v+' '+GG.u,g.mx[GG.u]])}});list.sort(function(a,b){return a[2]-b[2]})}
+ else if(st=='c'){L.forEach(function(g){if(!seen[g.d1]){seen[g.d1]=1;list.push([g.d1,g.d1])}});list.sort(function(a,b){return a[0]<b[0]?-1:1})}
+ else if(st=='s'){L.forEach(function(g){if(!seen[g.size]){seen[g.size]=1;list.push([String(g.size),'Nominal size '+g.size,g.size])}});list.sort(function(a,b){return a[2]-b[2]})}
+ return '<option value="">'+ph+'</option>'+list.map(function(o){return '<option value="'+esc(o[0])+'"'+(GG[st]===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')}
+function ggDesc(d){return esc(d).replace(/ (Male thread|Cartridge|Front panel|Suitable|According to EN|for high-pressure|to EN|To EN)/g,' · $1')}
+function ggQuiz(){
+ var Q=[['k','What will it measure?','Choose one'],['m','How will it be fitted?','Choose one'],['u','Which unit must the scale show?','Choose unit'],['r','Which display range?','Choose range'],['c','Which connection?','Choose connection'],['s','Which nominal size?','Choose size']];
+ var h='<div class="vshd nv"><b>Pressure gauge selector</b><button class="fc" data-ggx>Close ×</button></div><div class="vsin"><div class="axform vsform">',open=true;
+ Q.forEach(function(q,i){h+=axStep(i+1,'gg-'+q[0],q[1],open?ggOpts(q[0],q[2]):'<option value="">Answer step '+i+' first</option>',!open);if(GG[q[0]]==='')open=false});
+ h+='</div>';
+ var L=ggMatch(GGSTEPS.length),done=GGSTEPS.every(function(st){return GG[st]!==''}),out;
+ if(GG.k==='')out='<p class="note">Start with step 1.</p>';
+ else if(done||L.length<=4)out='<div class="pfh">'+(L.length==1?'Your gauge':L.length+' listed gauges match')+'</div>'+
+  vr(L.map(function(g){return [g.pn,'<b>'+esc(g.code)+'</b> · '+esc(g.g),'Nominal size '+g.size+' · '+esc(g.d1)+' · '+g.units.map(function(u){return u+' '+g.sc[u]}).join(' · ')+'<br>'+ggDesc(g.desc)]}))+
+  '<p class="note">The guide prints the type code with “…” where the range goes. The full type code is on the data sheet and in the online shop.</p>';
+ else out='<p class="note">'+L.length+' listed gauges match. Answer the next step.</p>';
+ return h+'<div id="gg-out" class="vssel">'+out+'</div></div>'}
+function ggRender(){var q=document.getElementById('gg-quiz'),i=document.getElementById('gg-intro'),b=document.getElementById('gg-cta');if(!q)return;
+ q.innerHTML=GG.on?ggQuiz():'';q.hidden=!GG.on;i.hidden=!!GG.on;b.classList.toggle('on',!!GG.on)}
+function ggCta(){return '<div class="vscta" id="gg-cta"><div class="vsct" id="gg-intro"><div class="tx"><b>Don’t know which to pick?</b><small>Use the pressure gauge selector. Answer a few questions about the application and get the matching part numbers.</small></div><button class="go sm" data-ggq>Start the pressure gauge selector →</button></div>'+
+ '<div id="gg-quiz" class="vssel" aria-live="polite" hidden></div></div>'+
+ '<p class="note">Gauges with certification for measuring devices in China (PAGN-…-CPA) are not in the selector. They are in the list below.</p>'}
+document.addEventListener('click',function(e){var b=e.target.closest('[data-ggq],[data-ggx]');if(!b)return;
+ GG={on:b.hasAttribute('data-ggq')?1:0,k:'',m:'',u:'',r:'',c:'',s:''};ggRender();vsScroll(document.getElementById('gg-cta'))});
+document.addEventListener('change',function(e){var m=/^gg-(k|m|u|r|c|s)$/.exec(e.target.id);if(!m)return;var i=GGSTEPS.indexOf(m[1]);
+ GG[m[1]]=e.target.value;for(var j=i+1;j<GGSTEPS.length;j++)GG[GGSTEPS[j]]='';
+ document.getElementById('gg-quiz').innerHTML=ggQuiz();var o=document.getElementById('gg-out');if(o&&o.querySelector('.vt'))vsScroll(o)});
 PFC.forEach(function(c,ci){add('pf-'+c.id,c.n,'All products',pfCatPage(ci),'pf');add('pf-'+c.id+'-find',c.n,'Find a part number',pfFindPage(ci),'pf')});
 
 add('fit-special','Fittings','Special fittings',
@@ -1235,7 +1293,7 @@ var EMI={MS4:{port:'G1/4',grid:'40 mm',flow:['1,500','1,700'],wt:'470 g',port1:'
 var EMG=['A8','AG-BAR','AG-MPA'];
 function emType(sz,f,d,g,b){return sz+'-EM1FR-'+EMI[sz].port1+'-D6-'+(f?'E':'C')+'-P-'+(d?'VC':'M')+'-'+EMG[g]+'-'+(b?'WP-F1A':'WPE')+'-B'}
 function emCard(sz,pick,use){var v=EMI[sz];
- var top=pick?'<div class="ffh vscard" id="ap-card"><span class="fim">'+im('ap_em1fr','MS-EM1FR')+'</span><span class="tx"><code>'+pick.pn+'</code><b>'+pick.type+'</b><small>'+(pick.core?'★ Core range':'Not marked as core range')+'</small></span></div>'
+ var top=pick?'<div class="ffh vscard" id="ap-card"><span class="fim">'+im('ap_em1fr','MS-EM1FR')+'</span><span class="tx"><code>'+pick.pn+'</code><b>'+pick.type+'</b><small>'+(pick.core?'★ Core range':'Not marked as core range')+'</small></span></div>'+pnBig(pick.pn)
   :'<div class="ffh vscard" id="ap-card"><span class="fim">'+im('ap_em1fr','MS-EM1FR')+'</span><span class="tx"><code>'+sz+'-EM1FR</code><b>On/off valve and filter regulator</b><small>Port '+v.port+' · grid '+v.grid+'</small></span></div>';
  return top+
  '<div class="tip"><strong>'+(use?'Your choices':'Use when')+'</strong>'+(use||['One unit to switch the air on and off and give filtered, regulated, unlubricated air','Output pressure adjustable from 0.5 to 7 bar']).join('<br>')+'</div>'+
@@ -1836,7 +1894,7 @@ function edCard(k,size,use){var v=ED[k];
  '<p class="note">Maximum values per size. They are not reached at the same time, so size the axis in Electric Motion Sizing before quoting.</p>'+
  '<div class="grp">Key features</div>'+bl(v.feat)+
  '<div class="tip"><strong>'+(k==='EGC-TB-KF'?'Complete system':'Good to know')+'</strong>'+v.sys+'</div>'+
- '<p class="note">Source: Festo "'+(k==='EGC-TB-KF'?'Toothed belt axes EGC-TB-KF", 2026/10':'Ball screw axes ELGD-BS", 2026/09')+'.</p>'}
+ catBtn(k)+'<p class="note">Source: Festo "'+(k==='EGC-TB-KF'?'Toothed belt axes EGC-TB-KF", 2026/10':'Ball screw axes ELGD-BS", 2026/09')+'.</p>'}
 
 /* axis selector */
 var ES={s:-1,v:-1,a:-1,f:-1};
@@ -1948,6 +2006,7 @@ function paDet(it){
  return '<div class="pap-d" id="pa-det" aria-live="polite"><div class="dim">'+im('pa_'+it.id,it.label)+'</div>'+
   '<span class="crumb">'+PALVN[it.lv]+' · '+esc(it.row)+'</span><h3>'+esc(it.label)+'</h3>'+
   (it.codes.length?codes(it.codes.map(esc)):'<p class="note">No product code given on the poster.</p>')+
+  (it.codes.length?'<div class="back">'+it.codes.map(catBtn).join('')+'</div>':'')+
   '<div class="row">'+(it.link?'<button type="button" class="pap-b fill" data-go="'+it.link[0]+'">'+esc(it.link[1])+' →</button>':'')+
   '<button type="button" class="pap-b x" data-pax>Close</button></div></div>'}
 function paList(){
@@ -2130,6 +2189,7 @@ add('axk','Electric drives','Axial kit finder',
  '<div id="ax-out" aria-live="polite"><p class="note">Start with the Festo drive.</p></div>'+
  '<p class="note">Source: '+esc(AXK.src)+'. Third-party lists include gear units where the catalogue lists them. Festo motors are listed by series and flange size. To size the whole drive, use Electric Motion Sizing.</p>'+
  tools(['ems','shop','help'])+
+ dsBox('axk')+
  back([['pkf','Next: parallel kit finder →'],['ele','Back to electric drives']]));
 
 /* ---------- parallel kit finder: Festo axis + Festo or third-party motor -> EAMM-U kit (data from Festo catalogue "Parallel kits EAMM-U" 2026/07) ---------- */
@@ -2265,6 +2325,7 @@ add('pkf','Electric drives','Parallel kit finder',
  '<div id="pk-out" aria-live="polite"><p class="note">Start with the Festo drive.</p></div>'+
  '<p class="note">Source: '+esc(PKD.src)+'. Third-party lists include gear units where the catalogue lists them. Festo motors are listed by series and flange size; for a Festo motor on a Festo gear unit, choose the gear unit. To size the whole drive, use Electric Motion Sizing.</p>'+
  tools(['ems','shop','help'])+
+ dsBox('pkf')+
  back([['axk','Back to axial kit finder'],['hub','Back to categories']]));
 
 /* ---------- sensor cable finder: NEBA connecting cables (data from Festo catalogue "Connecting cable NEBA" 2025/03) ---------- */
@@ -2356,6 +2417,7 @@ add('neba','Sensors','Sensor cable finder',
  '<div id="nb-out" aria-live="polite"><p class="note">Answer each step. Only combinations shown in the NEBA catalogue are offered.</p></div>'+
  '<p class="note">Sensor end = field device side (socket). Controller end = plug side. ★ marks the core range. Lengths from 0.3 to 30 m can also be configured. Source: Festo catalogue "Connecting cable NEBA", 2025/03.</p>'+
  tools(['shop','pconf'])+
+ dsBox('neba')+
  back([['pxsen','Next: proximity sensors →'],['cysen','Back to cylinder sensors']]));
 
 /* ---------- VTUX sales page (from Festo Product Short Information "Valve terminal VTUX", 136177 en 2026/10, and "VTUX 15 mm valves", 142653 en 2026/03) ---------- */
@@ -2667,6 +2729,18 @@ var tr=document.getElementById('track');
 /* keep the card from being scrolled sideways by scroll-into-view calls */
 (function(){var c=document.querySelector('#app .card');if(c)c.addEventListener('scroll',function(){if(c.scrollLeft)c.scrollLeft=0},{passive:true})})();
 tr.innerHTML=PAGES.map(function(p){return '<section class="pg '+p.cls+'" data-key="'+p.key+'">'+p.html+'</section>'}).join('');
+
+/* part numbers in text link to that part on Festo UK; runs on every page and on finder results as they appear */
+function pnLinkify(root){if(!root||!root.querySelectorAll)return;
+ [].forEach.call(root.querySelectorAll('b,code,table.sz td'),function(el){if(el.getAttribute('data-pl'))return;
+  var t=el.textContent.trim(),td=el.tagName==='TD';
+  if(!(td?/^\d{5,8}$/.test(t):/^\d{4,8}$/.test(t)))return;
+  if(el.closest('a,button,.vxs,select,label')||el.children.length)return;
+  el.setAttribute('data-pl','1');el.innerHTML='<a class="pnl" href="'+pnUrl(t)+'" target="_blank" rel="noopener" title="Open '+t+' on Festo.com">'+t+'</a>'});
+ [].forEach.call(root.querySelectorAll('.axk > .axk1'),function(k1){var card=k1.parentNode,b=k1.querySelector('.pn');
+  if(!b||card.querySelector('.pnb'))return;card.insertAdjacentHTML('beforeend',pnBig(b.getAttribute('data-copy')))})}
+pnLinkify(tr);
+try{new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.addedNodes,function(n){if(n.nodeType===1)pnLinkify(n.parentNode||n)})})}).observe(tr,{childList:true,subtree:true})}catch(x){}
 var pg=[].slice.call(tr.children),N=pg.length,cur=0;
 var KEYIX={};PAGES.forEach(function(p,ix){KEYIX[p.key]=ix});
 
@@ -2785,7 +2859,7 @@ document.addEventListener('click',function(e){
 
 
 /* ---------- part number button (copy) ---------- */
-function pnBtn(pn){return '<button class="pn" data-copy="'+pn+'" aria-label="Copy part number '+pn+'"><span class="addr">'+pn+'</span>'+ic('clip',14,'#1f5fb8')+'</button>'}
+function pnBtn(pn){return '<button class="pn" data-copy="'+pn+'" aria-label="Copy part number '+pn+'"><span class="addr">'+pn+'</span>'+ic('clip',14,'#1f5fb8')+'</button><a class="pnx" href="'+pnUrl(pn)+'" target="_blank" rel="noopener" aria-label="Open '+pn+' on Festo.com" title="Open on Festo.com">'+ic('ext',14,'#1f5fb8')+'</a>'}
 /* ---------- part number finders: the product card ---------- */
 var PF_SWC={'blue':'#1f6fd1','black':'#1b1b1b','silver':'#b9c0c7','red':'#d22b2b','green':'#2e9b4a','yellow':'#f2c500','natural':'#eef2f4','white':'#ffffff','brown':'#7a4a25',
  'translucent blue':'rgba(31,111,209,.45)','translucent black':'rgba(27,27,27,.45)','translucent red':'rgba(210,43,43,.45)','translucent green':'rgba(46,155,74,.45)','translucent yellow':'rgba(242,197,0,.5)',
