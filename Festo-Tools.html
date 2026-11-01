@@ -747,11 +747,11 @@ function catBtn(c){return '<a class="go alt sm" href="https://www.festo.com/cata
 function pnBig(pn){return '<a class="go alt sm pnb" href="'+pnUrl(pn)+'" target="_blank" rel="noopener">'+pn+' on Festo.com '+ic('ext',16,'#0091dc')+'</a>'}
 /* family catalogue buttons per page (same format as the gripper links) */
 var CATL={'cyl-dpdm':['DPDM'],'cyl-adn':['ADN'],'cyl-dsnu':['DSNU'],'cyl-dsbc':['DSBC'],'cyl-dfm':['DFM'],'cyl-crdng':['CRDNG'],'cyl-crdsnu':['CRDSNU'],
- 'fit-special':['NPQH','NPQM','NPQR','NPQP','NPCK','CRQS','QS-V0','NPQE','NPQO'],'vac':['VN','OVEM'],'axk':['EAMM-A'],'pkf':['EAMM-U'],'neba':['NEBA']};
+ 'fit-special':['NPQH','NPQM','NPQR','NPQP','NPCK','CRQS','QS-V0','NPQE','NPQO'],'vac':['VN','OVEM'],'axk':['EAMM-A'],'pkf':['EAMM-U']};
 function dsBox(k,label){var L=CATL[k];if(k==='air')return '<a class="go alt sm" href="https://www.festo.com/catalog/MS" target="_blank" rel="noopener">MS series catalogue page '+ic('ext',16,'#0091dc')+'</a>';
  if(!L)return '';return (L.length>2?'<div class="grp">Catalogue pages</div>':'')+'<div class="back">'+L.map(catBtn).join('')+'</div>'}
 function dsBoxOld(k,label){return '<section class="ds" data-k="'+k+'" data-l="'+esc(label)+'"></section>'}
-function back(a){return '<div class="back">'+a.map(function(b,ix){return '<button class="go'+(ix?' alt':'')+'" data-go="'+b[0]+'">'+b[1]+'</button>'}).join('')+'</div>'}
+function back(a){a=a.filter(function(b){return !/^Next\b/.test(b[1])});if(!a.length)return '';return '<div class="back">'+a.map(function(b,ix){return '<button class="go'+(ix?' alt':'')+'" data-go="'+b[0]+'">'+b[1]+'</button>'}).join('')+'</div>'}
 function generalNote(){return '<p class="note">General overview to help the conversation. Check the data sheet or the online shop before quoting a part number.</p>'}
 
 /* ---------- pages ---------- */
@@ -887,18 +887,19 @@ add('cyl','Cylinders','Overview',
  head('Cylinders','Compressed air in, straight-line push and pull out.')+
  '<p class="lead">ADN, DSNU and DSBC cover most enquiries. Each is built to an ISO standard, so it swaps for other brands of the same standard. DPDM is the short multi-mount compact cylinder, DFM adds a built-in guide for torque and side loads, and CRDNG and CRDSNU are stainless steel for harsh environments and the food sector.</p>'+
  '<div class="fams">'+
-  fam('cyl-dpdm','dpdm','DPDM','Compact, multi-mount. Piston 6–32 mm')+
-  fam('cyl-adn','adn','ADN','Compact, ISO 21287. Bore 12–125 mm')+
-  fam('cyl-dsnu','dsnu','DSNU','Round, ISO 6432. Bore 8–63 mm')+
-  fam('cyl-dsbc','dsbc','DSBC','Profile, ISO 15552. Bore 32–125 mm')+
-  fam('cyl-dfm','dfm','DFM','Guided drive. Piston 6–100 mm')+
-  fam('cyl-crdng','crdng','CRDNG','Stainless steel, ISO 15552. Bore 32–125 mm')+
-  fam('cyl-crdsnu','crdsnu','CRDSNU','Stainless steel, round. Bore 12–100 mm')+
+  fam('cyl-dpdm','dpdm','DPDM','Compact, multi-mount.<br>Piston 6–32 mm')+
+  fam('cyl-adn','adn','ADN','Compact, ISO 21287.<br>Bore 12–125 mm')+
+  fam('cyl-dsnu','dsnu','DSNU','Round, ISO 6432.<br>Bore 8–63 mm')+
+  fam('cyl-dsbc','dsbc','DSBC','Profile, ISO 15552.<br>Bore 32–125 mm')+
+  fam('cyl-dfm','dfm','DFM','Guided drive.<br>Piston 6–100 mm')+
+  fam('cyl-crdng','crdng','CRDNG','Stainless steel, ISO 15552.<br>Bore 32–125 mm')+
+  fam('cyl-crdsnu','crdsnu','CRDSNU','Stainless steel, round.<br>Bore 12–100 mm')+
  '</div>'+
  ask(['Bore and stroke (or the old part number)','Single or double acting','Male or female rod thread','Cushioning: rubber bumpers, adjustable or self-adjusting','Do they need position sensors?','How is it mounted at each end?'])+
  '<div class="grp">Goes with</div>'+bl(['<b>Mountings:</b> foot, flange, clevis, trunnion, rod eye and rod clevis','<b>Sensors:</b> proximity switches in the cylinder slot','<b>Flow control</b> to set the speed, and <b>push-in fittings</b> with tubing','<b>Valve</b> to drive it, fed from <b>air preparation</b>'])+
  tools(['psize','dt3d','@pkey'])+
  dsBox('cyl','Cylinders')+
+ '<a class="go" href="https://www.festo.com/gb/en/c/products/actuators/pneumatic-cylinders-id_pim135" target="_blank" rel="noopener">Pneumatic cylinders on Festo.com '+ic('ext',18,'#fff')+'</a>'+
  back([['cyl-dpdm','Next: DPDM →'],['hub','Back to categories']]));
 
 /* ---------- DPDM compact cylinder, multi-mount (from Festo "Compact cylinder DPDM, multi-mount", 2026/07) ---------- */
@@ -2020,7 +2021,7 @@ add('gripper','Grippers','Pneumatic grippers',
 add('ele','Electric drives','Pick an axis',
  '<div class="pic">'+im('electric','Electric axis')+'</div>'+
  head('Electric drives','Precise, programmable motion: many positions, controlled speed and force.')+
- '<div class="grp">Toothed belt or ball screw?</div>'+
+ '<div class="grp">Toothed belt EGC or ball screw ELGD?</div>'+
  '<div class="scroll"><table class="sz tgt"><thead><tr><th></th><th>Toothed belt</th><th>Ball screw</th></tr></thead><tbody>'+
   [['Speed, up to','10 m/s','2 m/s'],['Acceleration, up to','50 m/s²','20 m/s²'],['Repetition accuracy, up to','±0.08 mm','±0.003 mm'],['Stroke, up to','8,500 mm','3,000 mm']].map(function(r){return '<tr><td class="vsl vswrap">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'}).join('')+
  '</tbody></table></div>'+
@@ -2034,8 +2035,7 @@ add('ele','Electric drives','Pick an axis',
  bl(['<b>Electric cylinders</b> to replace a pneumatic cylinder, for example EPCO','<b>Simplified Motion Series</b> with the drive built in, set up like a pneumatic cylinder','<b>Servo and stepper motors</b> with their <b>controllers</b>, for example EMMT and CMMT','<b>Handling systems</b>: gantries and pick-and-place built from axes'])+
  ask(['Load and stroke','How many positions, and how accurate?','Speed or cycle time','How is it controlled: I/O, IO-Link or fieldbus?','Would a pneumatic cylinder be enough? Compare in CO2 and TCO guide'])+
  generalNote()+tools(['ems','hgo','co2','suite'])+
- '<button class="go" data-go="axk">Axial kit finder: motor to drive →</button>'+
- '<button class="go" data-go="pkf">Parallel kit finder: motor alongside drive →</button>'+
+ '<a class="go" href="https://www.festo.com/gb/en/c/products/actuators/electric-drives-id_pim205/" target="_blank" rel="noopener">Electric drives on Festo.com '+ic('ext',18,'#fff')+'</a>'+
  dsBox('ele','Electric drives')+
  back([['axk','Next: axial kit finder →'],['hub','Back to categories']]));
 
@@ -2461,7 +2461,7 @@ add('neba','Sensors','Sensor cable finder',
  '<p class="note">Sensor end = field device side (socket). Controller end = plug side. ★ marks the core range. Lengths from 0.3 to 30 m can also be configured. Source: Festo catalogue "Connecting cable NEBA", 2025/03.</p>'+
  tools(['shop','pconf'])+
  dsBox('neba')+
- back([['pxsen','Next: proximity sensors →'],['cysen','Back to cylinder sensors']]));
+ back([['pxsen','Next: proximity sensors →'],['hub','Back to categories']]));
 
 /* ---------- VTUX sales page (from Festo Product Short Information "Valve terminal VTUX", 136177 en 2026/10, and "VTUX 15 mm valves", 142653 en 2026/03) ---------- */
 function vxKey(rows){return '<table class="vxk"><thead><tr><th></th><th>10 mm valves</th><th>15 mm valves</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><th scope="row">'+r[0]+'</th>'+(r.length==2?'<td colspan="2">'+r[1]+'</td>':'<td'+(r[1]?'':' class="na"')+'>'+(r[1]||'Not stated')+'</td><td'+(r[2]?'':' class="na"')+'>'+(r[2]||'Not stated')+'</td>')+'</tr>'}).join('')+'</tbody></table>'}
