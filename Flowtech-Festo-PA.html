@@ -385,7 +385,7 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 .check li{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.35;color:var(--ink)}
 .check li::before{content:"";flex:none;width:16px;height:16px;margin-top:2px;border:2px solid var(--blue);border-radius:4px}
 .check li:last-child{border-bottom:0}
-.go.ft.pap-help{background:var(--dkblue)}.msg.msg3{grid-template-columns:repeat(3,minmax(0,1fr))}.msg3 .msb{flex-direction:column;align-items:center;text-align:center;padding:8px 6px;gap:4px}.msg3 .msb .im{width:100%;height:60px}.msg3 .msb small{margin-top:1px}.pap-g{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pap-t{padding:8px 5px 9px;border-radius:12px}.pap-t .fim{height:62px}.pap-t b{font-size:12px}.pap-t small{font-size:10.5px}.go.pa-fcat{background:var(--dkblue);color:#fff;border-color:var(--dkblue);display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px}.go.pa-fcat svg{flex:none}.fbox{background:var(--dark);border-radius:14px;padding:12px 10px 10px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:8px}.fbh{color:#fff;font-weight:700;font-size:18px;line-height:1.25;padding:2px 4px}.fbin{background:#fff;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;color:var(--text)}.fbin .axform{border:0;padding:0;background:transparent}.fbin>.note{margin:0}.fbox+details{margin-top:2px}.list.vahl .lk,.list.vahl .lk:last-child{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.pap-help{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;width:100%}.pap-help svg{flex:none}
+.go.ft.pap-help{background:var(--dkblue)}.msg.msg3{grid-template-columns:repeat(3,minmax(0,1fr))}.msg3 .msb{flex-direction:column;align-items:center;text-align:center;padding:8px 6px;gap:4px}.msg3 .msb .im{width:100%;height:60px}.msg3 .msb small{margin-top:1px}.pap-g{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pap-t{padding:8px 5px 9px;border-radius:12px}.pap-t .fim{height:62px}.pap-t b{font-size:12px}.pap-t small{font-size:10.5px}.go.pa-fcat{background:var(--dkblue);color:#fff;border-color:var(--dkblue);display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px}.go.pa-fcat svg{flex:none}.fwarn{background:#e3f0fa;color:var(--dkblue);border-left:4px solid var(--dkblue);border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.35}.fwarn b{display:block;margin-bottom:2px}.fbox{background:var(--dark);border-radius:14px;padding:12px 10px 10px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:8px}.fbh{color:#fff;font-weight:700;font-size:18px;line-height:1.25;padding:2px 4px}.fbin{background:#fff;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;color:var(--text)}.fbin .axform{border:0;padding:0;background:transparent}.fbin>.note{margin:0}.fbox+details{margin-top:2px}.list.vahl .lk,.list.vahl .lk:last-child{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.pap-help{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;width:100%}.pap-help svg{flex:none}
 
 /* Flowtech additions */
 h4.pfh{font-size:14px;color:var(--text)}
@@ -1627,7 +1627,18 @@ function qaFormA(){qaN=0;var h=qaColSel(0)+qaColSel(1);
   h+='<div class="fsel axst"><label for="qt-t"><span class="axn">'+(++qaN)+'</span>Torque the valve needs [Nm]</label><input id="qt-t" data-qt="t" type="number" inputmode="decimal" min="0" step="any" placeholder="From the valve manufacturer, e.g. 85" value="'+esc(String(ts.t))+'"></div>'+
    '<div class="fsel axst"><label for="qt-p"><span class="axn">'+(++qaN)+'</span>Operating pressure [bar]</label><select id="qt-p" data-qt="p">'+QTS_P.map(function(p){return '<option value="'+p+'"'+(String(p)===ts.p?' selected':'')+'>'+tsN(p)+' bar</option>'}).join('')+'</select></div>'+
    '<div class="fsel axst"><label for="qt-sf"><span class="axn">'+(++qaN)+'</span>Safety factor</label><select id="qt-sf" data-qt="sf">'+QTS_SF[ts.f].map(function(x){return '<option value="'+x[0]+'"'+(x[0]===ts.sf?' selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></div>'}
+ if(qa[0]==='1'&&qa[1]!==undefined){if(!QTS_SF.D.some(function(x){return x[0]===ts.sf}))ts.sf='1';
+  h+='<div class="fsel axst"><label for="qt-t"><span class="axn">'+(++qaN)+'</span>Torque the valve needs [Nm]</label><input id="qt-t" data-qt="t" type="number" inputmode="decimal" min="0" step="any" placeholder="From the valve manufacturer, e.g. 30" value="'+esc(String(ts.t))+'"></div>'+
+   '<div class="fsel axst"><label for="qt-pe"><span class="axn">'+(++qaN)+'</span>Operating pressure [bar]</label><select id="qt-pe" disabled><option>5.5 bar (nominal operating pressure)</option></select></div>'+
+   '<div class="fsel axst"><label for="qt-sf"><span class="axn">'+(++qaN)+'</span>Safety factor</label><select id="qt-sf" data-qt="sf">'+QTS_SF.D.map(function(x){return '<option value="'+x[0]+'"'+(x[0]===ts.sf?' selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></div>'}
  return h}
+/* DFPD-E: torque from the DFPD-E datasheet (torque at nominal operating pressure 5.5 bar). Single-acting: lowest printed value for the size (0° and 90° ranges) */
+var qaEs=null;
+function qeTq(sz){if(qa[1]==='D')return QTQ_E[sz]?parseFloat(QTQ_E[sz].replace(/,/g,'')):null;
+ if(!QTQ_ES0[sz])return null;return Math.min(parseFloat(QTQ_ES0[sz].split('...')[0]),parseFloat(QTQ_ES90[sz].split('...')[0]))}
+function qeCands(){var n=parseFloat(String(ts.t).replace(',','.'));if(!(n>0))return null;var T={need:n,sf:+ts.sf,target:n*(+ts.sf)},sizes=[];
+ QTR.forEach(function(r){if(r[0]===1&&r[1]===qa[1]&&sizes.indexOf(r[2])<0)sizes.push(r[2])});
+ var ok=sizes.map(function(s){return {s:s,lo:qeTq(s)}}).filter(function(o){return o.lo!=null&&o.lo>=T.target}).sort(function(a,b){return a.lo-b.lo});return {T:T,ok:ok}}
 function qaActOpts(R){return R?R.ok.filter(tsInStock).slice(0,6):[]}
 function qaFormB(){var h='',n0=qaN;
  if(qa[0]===undefined||qa[1]===undefined){return ''}
@@ -1644,7 +1655,16 @@ function qaFormB(){var h='',n0=qaN;
    var md=R.ok.filter(function(x){return !tsInStock(x)});
    if(qa[0]==='0'&&md.length&&(!L.length||md[0].lo<L[0].lo))h+=qGrp('Smaller options from the modular product system ('+md.filter(function(x){return !L.length||x.lo<L[0].lo}).length+')','Smallest first, showing up to 4.',md.filter(function(x){return !L.length||x.lo<L[0].lo}).slice(0,4).map(function(x){return tsCard(x,R.P)}).join(''))}
   if(qaAct)for(var i=4;i<QA_STEPS.length;i++)h+=qaColSel(i);
- }else for(var i=2;i<QA_STEPS.length;i++)h+=qaColSel(i);
+ }else{var R=qeCands(),L=R?R.ok.slice(0,6):[];
+  if(qaEs!=null&&!L.some(function(o){return o.s===qaEs})){qaEs=null;for(var j=2;j<QA_STEPS.length;j++)delete qa[QA_STEPS[j].c]}
+  if(qaEs==null&&L.length===1)qaEs=L[0].s;
+  if(qaEs!=null)qa[2]=String(qaEs);
+  var lab=function(o){return 'DFPD-E-'+o.s+' – '+tsN(o.lo)+' Nm'+(qa[1]==='S'?' (lowest listed)':'')};
+  var opts=!R?'<option value="">Enter the torque first</option>':!L.length?'<option value="">None large enough</option>':(L.length>1?'<option value=""'+(qaEs==null?' selected':'')+'>Choose… (smallest first)</option>':'')+L.map(function(o){return '<option value="'+o.s+'"'+(qaEs===o.s?' selected':'')+'>'+esc(lab(o))+'</option>'}).join('');
+  h+='<div class="fsel axst"><label for="qa-acte"><span class="axn">'+(++qaN)+'</span>Suitable actuator (size)</label><select id="qa-acte" data-qacte="1"'+(L.length<2?' disabled':'')+'>'+opts+'</select></div>';
+  if(R)h+='<p class="note qtarget">Target: '+tsN(R.T.need)+' Nm × '+R.T.sf+' = <b>'+tsN(R.T.target)+' Nm</b> at 5.5 bar.'+(L.length?'':' <b>No DFPD-E reaches this torque.</b> Look at DFPD or check the requirement.')+'</p>';
+  if(qaEs!=null)for(var i=3;i<QA_STEPS.length;i++)h+=qaColSel(i);
+ }
  return h}
 function qaActSet(k,c){qaAct={k:k,c:c};for(var j=2;j<QA_STEPS.length;j++)delete qa[QA_STEPS[j].c];qa[2]=String(tsSize(k));qa[3]=c;qa[5]=tsDesign(k)}
 function qaForm(){return '<div id="qa-fa">'+qaFormA()+'</div><div id="qa-fb">'+qaFormB()+'</div>'}
@@ -1663,6 +1683,8 @@ function qaRender(){
  if(!e&&da&&sz<=2300)f.push(['Torque at nominal operating pressure, 0° and 90° swivel angle',QTQ_D[sz]+' Nm']);
  if(!e&&da&&sz>2300){var k=r[5]+':'+sz;if(QTQ_DL[k])f.push(['Torque at nominal operating pressure, 0° and 90° swivel angle',QTQ_DL[k]+' Nm']);if(QAIR_DL[k])f.push(['Air consumption at 6 bar per cycle (0° – nominal swivel angle – 0°)',QAIR_DL[k]+' l'])}
  var tf=(!e&&qaAct)?tsFactsFor(qaAct):null;if(tf)tf.forEach(function(x){f.push(x)});
+ if(e&&qaEs!=null){var qe=qeCands();if(qe)f.push(['Torque the valve needs × safety factor',tsN(qe.T.need)+' Nm × '+qe.T.sf+' = '+tsN(qe.T.target)+' Nm'])}
+ if(e&&!da)warn.push('The DFPD-E datasheet gives torque ranges for single-acting sizes, not a value per spring force, and no spring torque. The finder used the lowest listed value for the size. Check the spring torque with Festo before quoting.');
  if(!e&&!da&&!tf){var tq=QTQ.SA[String(sz)]&&QTQ.SA[String(sz)].cfg[r[3]];if(tq){f.push(['Spring torque 0° / 90° (torque tables)',tsN(tq['0'].s)+' / '+tsN(tq['90'].s)+' Nm']);var pj=QTQ.SA[String(sz)].p.indexOf(+r[3]/10);if(pj>=0)f.push(['Air torque at '+tsN(+r[3]/10)+' bar, 0° / 90° (torque tables)',tsN(tq['0'].a[pj])+' / '+tsN(tq['90'].a[pj])+' Nm'])}else f.push(['Torque','See the DFPD torque selector']);if(QAIR_S[sz]&&!C)f.push(['Air consumption at 6 bar per cycle (0° – nominal swivel angle – 0°)',QAIR_S[sz]+' l'])}
  if(e&&da){f.push(['Torque at nominal operating pressure, 0° and 90° swivel angle',QTQ_E[sz]+' Nm']);f.push(['Air consumption at 6 bar per cycle (0° – nominal swivel angle – 0°)',QAIR_E[sz]+' l'])}
  if(e&&!da){f.push(['Torque at nominal operating pressure and 0° swivel angle',QTQ_ES0[sz]+' Nm']);f.push(['Torque at nominal operating pressure and 90° swivel angle',QTQ_ES90[sz]+' Nm']);f.push(['Air consumption at 6 bar per cycle (0° – nominal swivel angle – 0°)',QAIR_ES[sz]+' l'])}
@@ -1681,18 +1703,19 @@ function qaRender(){
 }
 function qaRefresh(){var f=document.getElementById('qa-form');if(f)f.innerHTML=qaForm();qaRender()}
 function qaRefreshB(){var a=document.getElementById('qa-fa'),b=document.getElementById('qa-fb');if(!a||!b){qaRefresh();return}qaN=a.querySelectorAll('.axst').length;b.innerHTML=qaFormB();qaRender()}
-function qaClearAct(){qaAct=null;for(var j=2;j<QA_STEPS.length;j++)delete qa[QA_STEPS[j].c]}
+function qaClearAct(){qaAct=null;qaEs=null;for(var j=2;j<QA_STEPS.length;j++)delete qa[QA_STEPS[j].c]}
 function qaDone(){if(qaRow()){var o=document.getElementById('qa-out');try{o.scrollIntoView({behavior:'smooth',block:'start'})}catch(x){}}}
 document.addEventListener('change',function(e){
  var el=e.target;if(!el.getAttribute)return;
  var i=el.getAttribute('data-qa');
  if(i!==null&&i!==undefined){i=+i;
   for(var j=i;j<QA_STEPS.length;j++)delete qa[QA_STEPS[j].c];
-  if(i<=1)qaAct=null;
+  if(i<=1){qaAct=null;qaEs=null}
   if(el.value)qa[QA_STEPS[i].c]=el.value.slice(1);
   qaRefresh();qaDone();return}
  var k=el.getAttribute('data-qt');
  if(k&&k!=='t'){ts[k]=el.value;qaClearAct();qaRefreshB();return}
+ if(el.getAttribute('data-qacte')){for(var j=2;j<QA_STEPS.length;j++)delete qa[QA_STEPS[j].c];qaEs=el.value?+el.value:null;qaRefreshB();qaDone();return}
  if(el.getAttribute('data-qact')){if(el.value){var p=el.value.split('|');qaActSet(p[0],p[1])}else qaClearAct();qaRefreshB();qaDone()}
 });
 document.addEventListener('input',function(e){var el=e.target;if(el.getAttribute&&el.getAttribute('data-qt')==='t'){ts.t=el.value;qaClearAct();qaRefreshB()}});
@@ -1777,6 +1800,7 @@ var QTS_NOTES=
   '<p class="note"><b>Selection rule (Flowtech guide, not from the Festo document):</b> torque the valve needs × safety factor must not be higher than the actuator torque in the end positions (0° and 90°). For single-acting actuators, both the spring torque and the air torque at your operating pressure must reach it. Only pressures printed in the tables are used – no values in between are calculated. Scotch yoke 45° values are shown for information.</p>'+
   '<p class="note"><b>Festo note (double-acting):</b> The operating torque of the actuator must not be greater than the maximum permissible torque listed in ISO 5211 in relation to the size of the mounting flange and of the coupling.</p>'+
   '<p class="note"><b>Festo note (single-acting):</b> Due to the physical effect of spring relaxation, the torque of single-acting actuators decreases over their service life. Therefore, when selecting the torque for single-acting DFPD, a minimum safety factor must be applied to ensure the torque required for your application is met. Minimum safety factor 1.3 at room temperature 23°C. Minimum safety factor 1.4 at 80°C. Please also observe an appropriate safety factor when selecting and configuring your drive based on your operating conditions.</p>'+
+  '<p class="note"><b>DFPD-E (Flowtech guide):</b> the DFPD torque tables do not cover DFPD-E, so the finder uses the DFPD-E datasheet. Double-acting: torque at nominal operating pressure (5.5 bar), the same at 0° and 90°; only 5.5 bar can be checked. Single-acting: the datasheet gives a torque range per size at 0° and at 90°, not a value per spring force, and no spring torque. The finder uses the lowest listed value for the size and marks the result to check with Festo.</p>'+
   '<p class="note"><b>DFPD-C (Flowtech guide):</b> the Festo torque document has no separate DFPD-C tables. DFPD-C is checked against the DFPD single-acting tables for the same size and spring force (RS35, RS45, RS60).</p>'+
   '<p class="note"><b>Festo note (sizes 3500 to 9500):</b> The design of quarter turn actuators that, when de-energised, are moved into a specific switching position by spring force, results in a loss of at least 30% of the calculated torque because of relaxation of the spring assemblies and friction. Please observe an appropriate safety factor when selecting and configuring your drive.</p>'+
   '<p class="note">The Festo torque document gives no safety factor for double-acting actuators. Use the valve manufacturer’s recommendation.</p>'+
@@ -1800,7 +1824,7 @@ add('qta','Actuators','Quarter turn actuators',
  qFacts([['Double-acting','The double-acting quarter turn actuator requires compressed air for each direction of movement. In this mode of operation, the torque for opening or closing the process valve is generated purely via the compressed air.'],
   ['Single-acting','With the single-acting quarter turn actuator, the incoming compressed air moves the pistons in one direction. This generates the torque of the actuator. The springs built into the actuator are pre-tensioned at the same time. This spring force generates the torque in the opposite direction of rotation when the pressure chambers of the actuator are exhausted. This causes the process valve to move to the required initial position.']])+
  '<div class="grp">Actuator finder</div>'+
- '<p class="note">DFPD and DFPD-C: start with the torque the valve needs (from the valve manufacturer). The finder checks it against the Festo DFPD torque tables. DFPD-E: choose by size – the DFPD torque tables do not cover DFPD-E.</p>'+
+ '<p class="note">Start with the torque the valve needs (from the valve manufacturer). DFPD and DFPD-C are checked against the Festo DFPD torque tables. DFPD-E is checked against the torque at nominal operating pressure (5.5 bar) in the DFPD-E datasheet.</p>'+
  '<div class="axform" id="qa-form">'+qaForm()+'</div>'+
  '<button class="go alt sm" id="qa-reset">Start again</button>'+
  '<div id="qa-out" aria-live="polite">'+QA_NOTE+'</div>'+
@@ -2627,6 +2651,7 @@ var root=document.getElementById('root');root.innerHTML=SHELL;
 var tr=document.getElementById('track');
 (function(){var c=document.querySelector('#app .card');if(c)c.addEventListener('scroll',function(){if(c.scrollLeft)c.scrollLeft=0},{passive:true})})();
 tr.innerHTML=PAGES.map(function(p){return '<section class="pg '+p.cls+'" data-key="'+p.key+'">'+p.html+'</section>'}).join('');
+function fWarn(){var w=document.createElement('div');w.className='fwarn';w.setAttribute('role','note');w.innerHTML='<b>Check before you order</b>This finder suggests a possible match only. Always check the product datasheet – you are responsible for confirming it meets your needs.';return w}
 /* part number finders: dark box, placed straight under the picture tiles (like the flow sensor selector) */
 [['qta','qa'],['daps','dp'],['srb','sb'],['srb2','sk'],['vzqa','vz'],['pcrp','pc'],['crvzs','cv'],['ms','ms']].forEach(function(f){
  var sec=tr.querySelector('section[data-key="'+f[0]+'"]'),form=document.getElementById(f[1]+'-form');if(!sec||!form||form.parentNode!==sec)return;
@@ -2637,7 +2662,9 @@ tr.innerHTML=PAGES.map(function(p){return '<section class="pg '+p.cls+'" data-ke
  var box=document.createElement('div');box.className='fbox';box.innerHTML='<div class="fbh">'+title.replace(/</g,'&lt;')+'</div><div class="fbin"></div>';
  var inn=box.lastChild;pre.forEach(function(n){inn.appendChild(n)});inn.appendChild(form);if(rs)inn.appendChild(rs);if(out)inn.appendChild(out);
  var tiles=sec.querySelector(':scope > .msg'),anchor=tiles||sec.querySelector(':scope > .codes')||sec.querySelector(':scope > .pic + div')||sec.firstElementChild;
- anchor.parentNode.insertBefore(box,anchor.nextSibling);form.scrollIntoView=function(o){box.scrollIntoView(o)};if(how)box.parentNode.insertBefore(how,box.nextSibling)});
+ anchor.parentNode.insertBefore(box,anchor.nextSibling);box.parentNode.insertBefore(fWarn(),box);form.scrollIntoView=function(o){box.scrollIntoView(o)};if(how)box.parentNode.insertBefore(how,box.nextSibling)});
+/* the same check box above the push-in fitting, valve and tube finders */
+[].forEach.call(tr.querySelectorAll('section[data-key$="-find"] .fsrch'),function(x){x.parentNode.insertBefore(fWarn(),x)});
 /* product code pills under the page title are not needed: the picture tiles and text already show the codes */
 [].forEach.call(tr.querySelectorAll('section.pg > .codes'),function(c){c.parentNode.removeChild(c)});
 pnLinkify(tr);
