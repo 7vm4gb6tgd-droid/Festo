@@ -112,14 +112,15 @@ h3{font-size:18px;line-height:1.25;font-weight:700;color:var(--text)}
 .cvr-warn h3 svg{flex:none;width:17px;height:17px}
 .cvr-warn p{font-size:12px;line-height:1.4;color:var(--text);padding:8px 12px 0}
 .cvr-warn p:last-child{padding-bottom:10px}
-.m2{position:relative;height:300px}
-.m2 .dg{position:absolute;left:50%;top:50%;width:340px;height:290px;transform:translate(-50%,-50%)}
+.m2{position:relative;height:244px}
+.m2 .dg{position:absolute;left:50%;top:50%;width:340px;height:290px;transform:translate(-50%,-50%) scale(.8)}
 .m2 svg.ln{position:absolute;inset:0;overflow:visible}
 .m2 .nd{position:absolute;width:78px;height:78px;border-radius:50%;background:#fff;border:1px solid var(--light);box-shadow:0 2px 8px rgba(18,41,90,.14);transform:translate(-50%,-50%);padding:0;cursor:pointer}
 .m2 .nd img{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);max-width:none;object-fit:contain;border-radius:50%}
 .m2 .ct{position:absolute;left:50%;top:50%;width:122px;height:122px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:2px solid #bfdcf1;box-shadow:0 4px 16px rgba(18,41,90,.18)}
 .m2 .ct img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76%;max-width:none}
-@media (max-width:359px){.m2 .dg{transform:translate(-50%,-50%) scale(.9)}}
+@media (max-width:359px){.m2 .dg{transform:translate(-50%,-50%) scale(.74)}.m2{height:226px}}
+@media (max-height:600px){.m2 .dg{transform:translate(-50%,-50%) scale(.6)}.m2{height:180px}}
 .cvr-warn a{color:var(--blue);font-weight:700}
 /* warning pop-up shown when leaving the cover; I agree continues */
 .bms.agr{align-items:center}
