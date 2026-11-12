@@ -104,6 +104,21 @@ h3{font-size:18px;line-height:1.25;font-weight:700;color:var(--text)}
 .ftc img{height:46px;width:auto}
 @media (max-height:700px){header img{height:28px}.ctile .fim{height:66px}.cov h2{font-size:24px}}
 @media (prefers-reduced-motion:reduce){#track,#prog i{transition:none}}
+.cvr{gap:16px}
+.cvr h2{font-size:28px;line-height:1.12}
+.cvr .sub{font-size:15px}
+.cvr-pics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:var(--bg2);border-radius:16px;padding:12px 10px}
+.cvr-pics span{height:74px;position:relative}
+.cvr-pics img{position:absolute;inset:0;margin:auto;max-width:96%;max-height:96%;mix-blend-mode:multiply}
+.cvr-warn{border:2px solid var(--dkblue);border-radius:16px;overflow:hidden;background:#fff}
+.cvr-warn h3{display:flex;align-items:center;gap:9px;background:var(--dkblue);color:#fff;font-size:16px;padding:11px 14px}
+.cvr-warn h3 svg{flex:none}
+.cvr-warn p{font-size:14.5px;line-height:1.45;color:var(--text);padding:12px 14px 0}
+.cvr-warn p:last-child{padding-bottom:14px}
+.cvr-warn a{color:var(--blue);font-weight:700}
+.cvr .go{min-height:52px;font-size:16px}
+@media (max-height:700px){.cvr{gap:12px}.cvr h2{font-size:24px}.cvr-pics{padding:8px}.cvr-pics span{height:50px}}
+
 
 /* ---- Component styles from the Festo Tools Guide, shown in Flowtech colours ---- */
 :root{--navy:var(--dark);--ink:var(--text);--mute:var(--grey);--line:var(--light);--pill:var(--pale);--code:var(--blue-dk);--card:#fff;--warnbg:#fff3cd;--warnfg:#7a5a00;--okbg:#e3f4ea;--okfg:#1d6b3a;--errbg:#fde7e7;--errfg:#9b1c1c}
@@ -428,7 +443,7 @@ var PF={"cats":[{"id":"tube","n":"Tubing and pipes","d":"O.D. and I.D. tubing, s
 var FT='https://flowtech.co.uk';
 var PAGES=[];
 function add(key,s,p,html,cls){PAGES.push({key:key,s:s,p:p,html:html,cls:cls||''})}
-var KEEP=["pa","qta","daps","dfpc","dfpi","dfpdhd","srb","srb2","spaw","cms","vzqa","vzx","ball","pcrp","crvzs","mount","help","vtux","cysen","fsen","valve","air","ms","pf-push","pf-push-find","pf-valve","pf-valve-find","pf-tube","pf-tube-find"];
+var KEEP=["cover","pa","qta","daps","dfpc","dfpi","dfpdhd","srb","srb2","spaw","cms","vzqa","vzx","ball","pcrp","crvzs","mount","help","vtux","cysen","fsen","valve","air","ms","pf-push","pf-push-find","pf-valve","pf-valve-find","pf-tube","pf-tube-find"];
 /* back buttons: pages that are not in this guide go back to the PA products page */
 function back(a){var seen={},o=[];a.forEach(function(b){if(/^Next\b/.test(b[1]))return;var k=b[0],l=b[1];if(KEEP.indexOf(k)<0){k='pa';l='Back to PA products'}if(seen[k])return;seen[k]=1;o.push([k,l])});if(!o.length)return '';return '<div class="back">'+o.map(function(b,ix){return '<button class="go'+(ix?' alt':'')+'" data-go="'+b[0]+'">'+b[1]+'</button>'}).join('')+'</div>'}
 var PFT=PF.types,PFC=PF.cats,PFID=PFC.map(function(c){return c.id}),PFLO={};
@@ -3646,6 +3661,13 @@ add('pa','Process automation','Products overview',
  '<p class="note">Source: Festo poster "Products and solutions for Process Automation", 136193 en 2024/07. The poster gives product names and groups only, no technical data or order numbers. Check festo.com/pa before quoting.</p>'+
  '<a class="go" href="https://www.festo.com/pa" target="_blank" rel="noopener">Festo process automation page '+ic('ext',18,'#fff')+'</a>'+
  dsBox('pa','Process automation')+'<a class="go ft" href="'+FT+'" target="_blank" rel="noopener">View on Flowtech website ›</a>'+'<div class="disc" role="note"><b>Not an official Festo app.</b> An unofficial guide for sales conversations. Product details and part numbers may be incomplete or out of date. Always check on <a href="https://www.festo.com" target="_blank" rel="noopener">festo.com</a> before quoting or ordering.</div>');
+add('cover','Process automation','Welcome',
+ head('Process automation guide','Products, selectors and part number finders for Festo process automation, in one place.')+
+ '<div class="cvr-pics" aria-hidden="true">'+['pa_ball','pa_dfpd','pa_srb1','pa_namur'].map(function(k){return '<span>'+im(k,'')+'</span>'}).join('')+'</div>'+
+ '<section class="cvr-warn" role="note" aria-labelledby="cvr-h"><h3 id="cvr-h"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4.5M12 17.2v.3"/></svg>Check before you order</h3>'+
+ '<p><b>This is not an official Festo app.</b> It is designed to point you in the right direction and help narrow down possible options to meet your needs.</p>'+
+ '<p><b>Before ordering any parts</b>, you must check all specifications using the datasheets on <a href="https://www.festo.com" target="_blank" rel="noopener">Festo.com</a>, and check that the proposed components meet your needs and project specifications.</p></section>'+
+ '<button type="button" class="go" data-go="pa">Open the guide →</button>','cvr');
 function ctile(id){var it=PAD.filter(function(x){return x.id===id})[0];return '<button class="ctile" data-cov="'+id+'"><span class="fim">'+im('pa_'+id,'')+'</span><b>'+esc(it.codes.join(' · '))+'</b><small>'+esc(it.label)+'</small></button>'}
 PAGES.sort(function(a,b){return KEEP.indexOf(a.key)-KEEP.indexOf(b.key)});
 /* ---------- shell (Flowtech) ---------- */
@@ -3693,12 +3715,12 @@ var hist=[];
 function go(n,isBack){if(n<0||n>=N)return;if(!isBack&&n!==cur){hist.push(cur);if(hist.length>50)hist.shift()}cur=n;tr.style.transform='translateX(-'+n*100+'%)';var p=PAGES[n];pg[n].scrollTop=0;
  document.getElementById('hs').textContent=p.s;document.getElementById('hp').textContent=p.p;
  document.querySelector('#prog i').style.width=((n+1)/N*100)+'%';
- var c=p.key==='pa';document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;document.getElementById('nx').disabled=n==N-1;
+ var c=p.key==='cover';document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;document.getElementById('nx').disabled=n==N-1;
  pg.forEach(function(x,ix){x.setAttribute('aria-hidden',ix==n?'false':'true');x.inert=ix!=n;x.classList.toggle('far',Math.abs(ix-n)>1)})}
 function goKey(k){if(k in KEYIX)go(KEYIX[k])}
-document.getElementById('bk').onclick=function(){if(hist.length)go(hist.pop(),true);else go(cur-1,true)};
+document.getElementById('bk').onclick=function(){if(PAGES[cur].key==='pa'){hist=[];go(KEYIX.cover,true);return}if(hist.length)go(hist.pop(),true);else go(cur-1,true)};
 document.getElementById('nx').onclick=function(){go(cur+1)};
-document.getElementById('hm').onclick=function(){goKey('pa')};
+document.getElementById('hm').onclick=function(){pas.lv='all';pas.sel=null;[].forEach.call(document.querySelectorAll('[data-palv]'),function(x){x.setAttribute('aria-pressed',x.getAttribute('data-palv')==='all')});paRender();goKey('pa')};
 document.addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b){e.preventDefault();goKey(b.getAttribute('data-go'))}});
 var sx,sy;tr.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
 tr.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5&&!e.target.closest('.scroll,input,select'))go(cur+(dx<0?1:-1))},{passive:true});
