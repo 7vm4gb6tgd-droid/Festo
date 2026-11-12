@@ -121,6 +121,14 @@ h3{font-size:18px;line-height:1.25;font-weight:700;color:var(--text)}
 .m2 .ct img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76%;max-width:none}
 @media (max-width:359px){.m2 .dg{transform:translate(-50%,-50%) scale(.9)}}
 .cvr-warn a{color:var(--blue);font-weight:700}
+/* warning pop-up shown when leaving the cover; I agree continues */
+.bms.agr{align-items:center}
+.agr .bms-card{max-width:420px;gap:14px}
+.agr .cvr-warn h3{font-size:16px;padding:10px 14px}
+.agr .cvr-warn h3 svg{width:20px;height:20px}
+.agr .cvr-warn p{font-size:14px;line-height:1.45;padding:10px 14px 0}
+.agr .cvr-warn p:last-child{padding-bottom:12px}
+.agr-no{border:0;background:none;font:inherit;font-size:14px;color:var(--grey);padding:2px;cursor:pointer;align-self:center}
 .cvr .go{min-height:52px;font-size:16px}
 @media (max-height:700px){.cvr{gap:12px}.cvr h2{font-size:24px}}
 
@@ -3676,9 +3684,6 @@ function cvDiagram(){
  return '<div class="m2"><div class="dg"><svg class="ln" width="340" height="290" aria-hidden="true"><ellipse cx="170" cy="145" rx="130" ry="104" fill="none" stroke="#dfe5ea" stroke-width="1.5" stroke-dasharray="3 5"/><g stroke="#0091dc" stroke-width="1.5" opacity=".55">'+lines+'</g></svg>'+nd+'<div class="ct">'+im('logo','Flowtech')+'</div></div></div>'}
 add('cover','Process automation','Welcome',
  head('Process automation guide','Products, selectors and part number finders for Festo process automation, in one place.')+
-  '<section class="cvr-warn" role="note" aria-labelledby="cvr-h"><h3 id="cvr-h"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4.5M12 17.2v.3"/></svg>Check before you order</h3>'+
- '<p><b>This is not an official Festo app.</b> It is designed to point you in the right direction and help narrow down possible options to meet your needs.</p>'+
- '<p><b>Before ordering any parts</b>, you must check all specifications using the datasheets on <a href="https://www.festo.com" target="_blank" rel="noopener">Festo.com</a>, and check that the proposed components meet your needs and project specifications.</p></section>'+
  cvDiagram()+
  '<button type="button" class="go" data-go="pa">Open the guide →</button>','cvr');
 function ctile(id){var it=PAD.filter(function(x){return x.id===id})[0];return '<button class="ctile" data-cov="'+id+'"><span class="fim">'+im('pa_'+id,'')+'</span><b>'+esc(it.codes.join(' · '))+'</b><small>'+esc(it.label)+'</small></button>'}
@@ -3693,7 +3698,12 @@ var SHELL='<div id="app"><div class="card"><header>'+im('logo','Flowtech')+'<spa
  '<div class="bms-os" data-os="ios"><div class="bms-lbl">iPhone and iPad (Safari)</div><ol><li><span class="num">1</span><span>Tap <b>Share</b> at the bottom of the screen (top right on iPad).</span></li><li><span class="num">2</span><span>Scroll down and tap <b>Add to Home Screen</b>.</span></li><li><span class="num">3</span><span>Tap <b>Add</b>.</span></li></ol></div>'+
  '<div class="bms-os" data-os="android"><div class="bms-lbl">Android (Chrome)</div><ol><li><span class="num">1</span><span>Tap the <b>⋮</b> menu at the top right.</span></li><li><span class="num">2</span><span>Tap <b>Add to Home screen</b> (it may say <b>Install app</b>).</span></li><li><span class="num">3</span><span>Tap <b>Add</b>.</span></li></ol></div>'+
  '<p class="note">Opened from a QR scanner, Teams or Outlook? Open the guide in Safari or Chrome first.</p>'+
- '<div class="bms-btns"><button class="go alt sm" id="bms-copy">Copy link</button><button class="go sm" id="bms-ok">Done</button></div></div></div>';
+ '<div class="bms-btns"><button class="go alt sm" id="bms-copy">Copy link</button><button class="go sm" id="bms-ok">Done</button></div></div></div>'+
+ '<div id="agr" class="bms agr" hidden role="dialog" aria-modal="true" aria-labelledby="agr-h"><div class="bms-card">'+
+ '<section class="cvr-warn" ><h3 id="agr-h"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4.5M12 17.2v.3"/></svg>Check before you order</h3>'+
+ '<p><b>This is not an official Festo app.</b> It is designed to point you in the right direction and help narrow down possible options to meet your needs.</p>'+
+ '<p><b>Before ordering any parts</b>, you must check all specifications using the datasheets on <a href="https://www.festo.com" target="_blank" rel="noopener">Festo.com</a>, and check that the proposed components meet your needs and project specifications.</p></section>'+
+ '<button type="button" class="go" id="agr-ok">I agree</button><button type="button" class="agr-no" id="agr-no">Cancel</button></div></div>';
 var root=document.getElementById('root');root.innerHTML=SHELL;
 var tr=document.getElementById('track');
 (function(){var c=document.querySelector('#app .card');if(c)c.addEventListener('scroll',function(){if(c.scrollLeft)c.scrollLeft=0},{passive:true})})();
@@ -3725,7 +3735,8 @@ try{new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.a
 var pg=[].slice.call(tr.children),N=pg.length,cur=0,KEYIX={};PAGES.forEach(function(p,ix){KEYIX[p.key]=ix});
 /* history: Back returns to the page you were last on */
 var hist=[];
-function go(n,isBack){if(n<0||n>=N)return;if(!isBack&&n!==cur){hist.push(cur);if(hist.length>50)hist.shift()}cur=n;tr.style.transform='translateX(-'+n*100+'%)';var p=PAGES[n];pg[n].scrollTop=0;
+var agreed=false,agrTo=null;
+function go(n,isBack){if(n<0||n>=N)return;if(!agreed&&PAGES[cur].key==='cover'&&n!==cur){agrTo=n;agrOpen();return}if(!isBack&&n!==cur){hist.push(cur);if(hist.length>50)hist.shift()}cur=n;tr.style.transform='translateX(-'+n*100+'%)';var p=PAGES[n];pg[n].scrollTop=0;
  document.getElementById('hs').textContent=p.s;document.getElementById('hp').textContent=p.p;
  document.querySelector('#prog i').style.width=((n+1)/N*100)+'%';
  var c=p.key==='cover';document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;document.getElementById('nx').disabled=n==N-1;
@@ -3754,6 +3765,13 @@ document.getElementById('bm').onclick=function(){var os=bmOS();
  if(!touch){say('Press '+(/Mac/.test(navigator.platform||'')?'⌘ + D':'Ctrl + D')+' to bookmark');return}
  [].forEach.call(bms.querySelectorAll('.bms-os'),function(b){b.hidden=!!os&&b.getAttribute('data-os')!==os});bms.hidden=false;document.getElementById('bms-ok').focus()};
 function bmClose(){bms.hidden=true}
+var agr=document.getElementById('agr');
+function agrOpen(){agr.hidden=false;document.getElementById('agr-ok').focus()}
+function agrClose(){agr.hidden=true;agrTo=null}
+document.getElementById('agr-ok').onclick=function(){var n=agrTo;agreed=true;agr.hidden=true;agrTo=null;if(n!==null)go(n)};
+document.getElementById('agr-no').onclick=agrClose;
+agr.addEventListener('click',function(e){if(e.target===agr)agrClose()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!agr.hidden)agrClose()});
 document.getElementById('bms-x').onclick=bmClose;document.getElementById('bms-ok').onclick=bmClose;
 bms.addEventListener('click',function(e){if(e.target===bms)bmClose()});
 document.getElementById('bms-copy').onclick=function(){var u=location.href.split('#')[0];try{navigator.clipboard.writeText(u).then(function(){say('Link copied')},function(){say('Copy the link from the address bar')})}catch(x){say('Copy the link from the address bar')}};
