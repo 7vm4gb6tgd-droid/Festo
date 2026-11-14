@@ -1335,7 +1335,6 @@ add('air','Air preparation','Pick a unit',
  '<p class="note">Standard nominal flow rate of the MS-EM1FR on/off valve and filter regulator. The 40 µm filter gives more flow, the 5 µm filter cleaner air.</p>'+
  '<div class="grp vstop">Pick a unit</div>'+
  '<div class="fgrp"><div class="ftg">'+
-  '<button class="ft" data-go="ms"><span class="fim">'+im('ms_combo','')+'</span><code>MS series</code><small>stock modules finder</small></button>'+
   ['MS4','MS6'].map(function(k){return '<button class="ft" data-apv="'+k+'" aria-pressed="false"><span class="fim">'+im('ap_em1fr','')+'</span><code>'+k+'-EM1FR</code><small>on/off + filter reg.</small></button>'}).join('')+
  '</div></div>'+
  '<div id="ap-sel" class="vssel" aria-live="polite" hidden></div>'+
@@ -2686,14 +2685,7 @@ document.addEventListener('click',function(e){
 
 add('ms','Air preparation','MS series',
  '<div class="pic">'+im('ms_combo','MS series service unit')+'</div>'+
- head('MS series – air preparation','Small size, large flow. MS4 and MS6 modules, as individual components or pre-assembled combinations ex-stock.')+
- codes(['FAST','MS4 · G1/4 or 1/4 NPT','MS6 · G1/2 or 1/2 NPT'])+
- '<div class="grp">Why customers choose it</div>'+
- bl(['<b>Integrated lockability</b> for lock out tag out and to prevent tampering with set pressures',
-     '<b>Newly redesigned auto-drain</b> with higher reliability and enhanced performance',
-     '<b>Suitable for standard applications</b> as well as applications with very high air quality requirements',
-     '<b>Available as individual components or pre-assembled combinations</b> ex-stock',
-     '<b>MS6-SV safety valves</b> for fast and reliable exhausting of systems up to Performance Level d or e, certified to EN ISO 13849-1'])+
+ head('MS series – Module selector','Small size, large flow. MS4 and MS6 modules, as individual components or pre-assembled combinations ex-stock.')+
  '<div class="grp">The modules – tap one to find a part number</div>'+
  '<div class="msg">'+Object.keys(MSM).map(function(k){var m=MSM[k];return '<button class="msb" data-msm="'+k+'"><span class="im">'+im(m.i,'')+'</span><span class="tx"><b>'+esc(m.n)+'</b><small>'+esc(m.d)+'</small></span></button>'}).join('')+'</div>'+
  '<div class="grp">Part number finder</div>'+
@@ -2701,6 +2693,12 @@ add('ms','Air preparation','MS series',
  '<button class="go alt sm" id="ms-reset">Start again</button>'+
  '<div id="ms-out" aria-live="polite"><p class="note">Answer each step. Only the part numbers printed in the MS series leaflet are offered.</p></div>'+
  '<p class="note">All housings metal. N in the type code (MS4N, MS6N) = NPT thread. Source: Festo leaflet "Air preparation - MS series", 239098 EN 2025/04. Errors and omissions excepted.</p>'+
+ '<div class="grp">Why customers choose it</div>'+
+ bl(['<b>Integrated lockability</b> for lock out tag out and to prevent tampering with set pressures',
+     '<b>Newly redesigned auto-drain</b> with higher reliability and enhanced performance',
+     '<b>Suitable for standard applications</b> as well as applications with very high air quality requirements',
+     '<b>Available as individual components or pre-assembled combinations</b> ex-stock',
+     '<b>MS6-SV safety valves</b> for fast and reliable exhausting of systems up to Performance Level d or e, certified to EN ISO 13849-1'])+
  ask(['Pipe or port size: G or NPT, 1/4 or 1/2?','How much air does the machine use (flow)?','Working pressure, and the range they need to set','How clean must the air be? Filters come in 40, 5, 1 and 0.01 µm, and active carbon','Manual or auto drain?','Do they need lock-out, soft start or a safety exhaust valve?'])+
  tools(['shop','pconf','va'])+
  '<a class="go" href="https://www.festo.com/catalog/MS" target="_blank" rel="noopener">MS series online catalogue '+ic('ext',18,'#fff')+'</a>'+
@@ -2741,7 +2739,8 @@ try{new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.a
 var pg=[].slice.call(tr.children),N=pg.length,cur=0;
 var KEYIX={};PAGES.forEach(function(p,ix){KEYIX[p.key]=ix});
 
-function go(n){if(n<0||n>=N)return;cur=n;tr.style.transform='translateX(-'+n*100+'%)';var p=PAGES[n],el=pg[n];el.scrollTop=0;
+var hist=[];
+function go(n,back){if(n<0||n>=N)return;if(!back&&n!==cur){hist.push(cur);if(hist.length>60)hist.shift()}cur=n;tr.style.transform='translateX(-'+n*100+'%)';var p=PAGES[n],el=pg[n];el.scrollTop=0;
  var f=p.s=='Festo';document.getElementById('hs').textContent=f?p.p:p.s;document.getElementById('hp').textContent=f?'':p.p;
  document.getElementById('pn').textContent=(n+1)+'/'+N;document.querySelector('#bar i').style.width=((n+1)/N*100)+'%';
  var c=n==0;document.getElementById('bk').hidden=c;document.getElementById('hm').hidden=c;document.getElementById('bm').hidden=!c;document.getElementById('nx').disabled=n==N-1;
@@ -2751,7 +2750,7 @@ function go(n){if(n<0||n>=N)return;cur=n;tr.style.transform='translateX(-'+n*100
 function goKey(k){if(k in KEYIX)go(KEYIX[k])}
 function fit(){var m=document.querySelector('.m2');if(!m)return;var d=m.firstChild;d.style.setProperty('--s',Math.max(.4,Math.min(m.clientWidth/340,m.clientHeight/290,1.15)))}
 
-document.getElementById('bk').onclick=function(){go(cur-1)};
+document.getElementById('bk').onclick=function(){if(hist.length)go(hist.pop(),true);else go(cur-1,true)};
 document.getElementById('nx').onclick=function(){go(cur+1)};
 document.getElementById('hm').onclick=function(){goKey('hub')};
 document.addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b){e.preventDefault();goKey(b.getAttribute('data-go'))}});
