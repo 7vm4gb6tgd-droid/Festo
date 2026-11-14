@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Festo Cross-Sell Flipbook</title><style>
+<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b1f33"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Festo-RS Quick guide"><title>Festo-RS Quick guide</title><style>
 :root{--blue:#0091dc;--navy:#12295a;--mute:#5f6f85;--line:#e1e8f2;--card:#fff;--pill:#dce9f8;--c:var(--blue);box-sizing:border-box}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#0b1f33;font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--navy);overflow:hidden}
@@ -661,13 +661,13 @@ fit();addEventListener('resize',fit);go(0);
   });}
 })();
 </script><div id="bmt" role="status" aria-live="polite"></div><script>
-var BOOK_URL='https://claude.ai/artifact/RnLVivXvs2VPHorK45qcQb',bmTimer;
+var BOOK_URL=/^https?:/.test(location.protocol)?location.href.split('#')[0]:'https://claude.ai/artifact/RnLVivXvs2VPHorK45qcQb',bmTimer;
 function bmSay(t){var e=document.getElementById('bmt');e.textContent=t;e.classList.add('on');clearTimeout(bmTimer);bmTimer=setTimeout(function(){e.classList.remove('on')},6000)}
 function bookmark(){
   var touch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
   var mac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
   var tip=touch?'Open your browser menu (Share or ⋮) and choose Add Bookmark or Add to Home Screen.':'Press '+(mac?'⌘ + D':'Ctrl + D')+' to bookmark this flipbook.';
-  if(touch&&navigator.share){navigator.share({title:'Festo Accessory and Upsell quick guide',url:BOOK_URL}).catch(function(e){if(!e||e.name!=='AbortError')bmSay(tip)});return}
+  if(touch&&navigator.share){navigator.share({title:'Festo-RS Quick guide',url:BOOK_URL}).catch(function(e){if(!e||e.name!=='AbortError')bmSay(tip)});return}
   bmSay(tip);
 }
 </script>
@@ -826,3 +826,8 @@ go=function(n,back){if(n>=0&&n<N&&!back&&n!==i){h.push(i);if(h.length>60)h.shift
 window.goBack=function(){if(h.length)go(h.pop(),true);else go(i-1,true)};
 })();
 </script>
+<style>
+/* Phone fit: start the card below the status bar and the top fade, dark behind it */
+html,body{background:#0b1f33}
+#app{padding-top:max(8px,calc(env(safe-area-inset-top,0px) + 20px))}
+</style>

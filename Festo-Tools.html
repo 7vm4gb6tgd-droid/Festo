@@ -1,5 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Festo Tools Guide</title><style id="css">/* Layout: one phone-sized card that flips page to page, as in the Staff Pocket Guide. Single light theme in Festo blue and navy, set deliberately. */
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1f33"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Festo Tools"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Festo Tools</title><style id="css">/* Layout: one phone-sized card that flips page to page, as in the Staff Pocket Guide. Single light theme in Festo blue and navy, set deliberately. */
 :root{
   --blue:#0091dc;--blue-dk:#0079bd;--navy:#12295a;--ink:#33414f;--mute:#5f6f85;
   --line:#e1e8f2;--pill:#dce9f8;--code:#1f5fb8;--card:#fff;--ground:#0b1f33;--rail:#34475c;
@@ -601,7 +601,7 @@ function pfHub(rest){var all={};PF_PNF.forEach(function(c){all[c.k]=c});CATS.for
  var out=PF_HUB_ORDER.filter(function(k){return all[k]}).map(function(k){return all[k]});
  Object.keys(all).forEach(function(k){if(PF_HUB_ORDER.indexOf(k)<0)out.push(all[k])});return out}
 var SKEL='<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>';
-var TITLE='<title>Festo Tools Guide</title>';
+var TITLE='<title>Festo Tools</title>';
 var ENG='https://www.festo.com/gb/en/e/engineering-tools-id_650881';
 
 /* ---------- data sheets store (kept in this page, saved by republishing) ---------- */
@@ -3056,3 +3056,8 @@ if(window.claude&&typeof window.claude.use==='function'){
 })();
 </script>
 </body></html>
+<style>
+/* Phone fit: start the card below the status bar and the top fade, dark behind it */
+html,body{background:#0b1f33}
+#app{padding-top:max(8px,calc(env(safe-area-inset-top,0px) + 20px))}
+</style>
