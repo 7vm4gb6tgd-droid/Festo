@@ -988,3 +988,8 @@ document.addEventListener('click',function(e){var x=e.target.closest('[data-cycl
 .cyl2 .cyf:has(> .fam[aria-expanded=true]){border:2px solid #0079bd;box-shadow:0 2px 10px rgba(0,121,189,.15)}
 .cyl2 .cyf:has(> .fam[aria-expanded=true]) > .cyp{border-top-color:#0079bd}
 </style>
+<style>
+/* index RS v2: small grey "V2" under QUICK GUIDE on the cover (does not move the title) */
+#app header.cv .ht{position:relative}
+#app header.cv .ht::after{content:"V2";position:absolute;left:0;right:0;top:100%;margin-top:1px;text-align:center;font-size:11px;line-height:1;font-weight:700;letter-spacing:.06em;color:#9aa6b6}
+</style>
