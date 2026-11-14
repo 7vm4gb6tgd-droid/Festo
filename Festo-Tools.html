@@ -1,4 +1,20 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1f33"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Festo Tools"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1f33"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Festo Tools"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script>
+/* Phone fit: iPhone home-screen apps can report a short height at launch until the phone is turned.
+   Use the full screen height in home-screen mode, and re-check the height a few times as the app opens. */
+(function(){
+function sa(){try{return navigator.standalone===true||matchMedia('(display-mode: standalone)').matches}catch(e){return false}}
+window.__fullH=function(){var h=window.innerHeight||0;
+ try{if(window.visualViewport)h=Math.max(h,Math.round(visualViewport.height))}catch(e){}
+ if(sa()&&window.screen&&screen.height){var p=true;try{p=matchMedia('(orientation: portrait)').matches}catch(e){}
+  var s=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);if(s>h&&s-h<260)h=s}
+ return h};
+var last=0;function poke(){var h=window.__fullH();if(Math.abs(h-last)>1){last=h;try{window.dispatchEvent(new Event('resize'))}catch(e){}}}
+addEventListener('load',function(){[0,100,300,700,1500,3000].forEach(function(t){setTimeout(poke,t)})});
+addEventListener('pageshow',function(){setTimeout(poke,100)});
+document.addEventListener('visibilitychange',function(){if(!document.hidden){last=0;setTimeout(poke,100);setTimeout(poke,600)}});
+try{if(window.visualViewport)visualViewport.addEventListener('resize',function(){last=0;poke()})}catch(e){}
+})();
+</script></head><body>
 <title>Festo Tools</title><style id="css">/* Layout: one phone-sized card that flips page to page, as in the Staff Pocket Guide. Single light theme in Festo blue and navy, set deliberately. */
 :root{
   --blue:#0091dc;--blue-dk:#0079bd;--navy:#12295a;--ink:#33414f;--mute:#5f6f85;
@@ -3044,7 +3060,7 @@ renderAllDS();
 var startKey=null;try{startKey=sessionStorage.getItem('ftg-page');sessionStorage.removeItem('ftg-page')}catch(x){}
 if(!startKey){var h=(location.hash||'').slice(1);if(h in KEYIX)startKey=h}
 go(startKey&&startKey in KEYIX?KEYIX[startKey]:0);
-function setH(){var hh=window.innerHeight;if(hh>0)document.documentElement.style.setProperty('--app-h',hh+'px');fit()}
+function setH(){var hh=window.__fullH?window.__fullH():window.innerHeight;if(hh>0)document.documentElement.style.setProperty('--app-h',hh+'px');fit()}
 setH();addEventListener('resize',setH);addEventListener('orientationchange',function(){setTimeout(setH,300)});addEventListener('pageshow',setH);
 
 /* capabilities: light up editing for people who can edit, and Save for everyone where offered */

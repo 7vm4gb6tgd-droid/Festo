@@ -313,7 +313,23 @@ nav [hidden]{display:none!important}
 .fx .pkl code{color:var(--code);font-weight:700}
 .fx button:focus-visible,.fx a:focus-visible,.fx input:focus-visible,.fx select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 </style>
-</head><body><style>
+<script>
+/* Phone fit: iPhone home-screen apps can report a short height at launch until the phone is turned.
+   Use the full screen height in home-screen mode, and re-check the height a few times as the app opens. */
+(function(){
+function sa(){try{return navigator.standalone===true||matchMedia('(display-mode: standalone)').matches}catch(e){return false}}
+window.__fullH=function(){var h=window.innerHeight||0;
+ try{if(window.visualViewport)h=Math.max(h,Math.round(visualViewport.height))}catch(e){}
+ if(sa()&&window.screen&&screen.height){var p=true;try{p=matchMedia('(orientation: portrait)').matches}catch(e){}
+  var s=p?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);if(s>h&&s-h<260)h=s}
+ return h};
+var last=0;function poke(){var h=window.__fullH();if(Math.abs(h-last)>1){last=h;try{window.dispatchEvent(new Event('resize'))}catch(e){}}}
+addEventListener('load',function(){[0,100,300,700,1500,3000].forEach(function(t){setTimeout(poke,t)})});
+addEventListener('pageshow',function(){setTimeout(poke,100)});
+document.addEventListener('visibilitychange',function(){if(!document.hidden){last=0;setTimeout(poke,100);setTimeout(poke,600)}});
+try{if(window.visualViewport)visualViewport.addEventListener('resize',function(){last=0;poke()})}catch(e){}
+})();
+</script></head><body><style>
 /* Pneumatic FAQs page */
 .bx .fgrp{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
 .bx .fgrp .grp{margin:4px 0 0}
@@ -718,7 +734,7 @@ html,body{height:100%;height:100dvh;height:var(--app-h,100dvh)}
 <script>
 (function(){
   var r=document.documentElement;
-  var lastH=0,rq;function setH(){var h=window.innerHeight;if(h>0&&Math.abs(h-lastH)>1){lastH=h;r.style.setProperty('--app-h',h+'px');if(typeof fit==='function')fit()}}
+  var lastH=0,rq;function setH(){var h=window.__fullH?window.__fullH():window.innerHeight;if(h>0&&Math.abs(h-lastH)>1){lastH=h;r.style.setProperty('--app-h',h+'px');if(typeof fit==='function')fit()}}
   setH();
   addEventListener('resize',function(){cancelAnimationFrame(rq);rq=requestAnimationFrame(setH)});
   addEventListener('orientationchange',function(){setTimeout(setH,300)});
