@@ -3259,19 +3259,18 @@ window.scanSAShare=function(){
   if(!lastSA||!canSharePhoto())return;
   try{if(navigator.clipboard)navigator.clipboard.writeText(SA_MAIL).catch(function(){})}catch(e){}
   $('scn-sa-h').style.display='block';
-  navigator.share({files:[lastFile],title:saSub(lastSA.type,lastSA.pn),text:'To: '+SA_MAIL+'\nSubject: '+saSub(lastSA.type,lastSA.pn)+'\n\n'+saBody(lastSA.type,lastSA.pn)}).catch(function(){});
+  navigator.share({files:[lastFile],title:saSub(lastSA.type,lastSA.pn),text:saBody(lastSA.type,lastSA.pn)}).catch(function(){});
 };
 window.scanSA=function(){if(!lastSA)return;var d=$('scn-sa');
-  if(!d){document.body.insertAdjacentHTML('beforeend','<div id="scn-sa" role="alertdialog" aria-modal="true" aria-labelledby="scn-sa-t"><div class="sa-bx"><h4 id="scn-sa-t">Special part – not a standard part</h4><p>This type code ends in <b id="scn-sa-x">SA</b>, which means it is a special and not a standard part. Festo will need to quote for it separately.</p><p>Contact Festo with the type code and part number. Extra information such as photos and dimensions will help speed up the quote.</p><dl id="scn-sa-d"></dl><p style="font-size:13px" id="scn-sa-n"></p><div class="sa-bt"><a id="scn-sa-p" href="#" onclick="scanSAShare();return false">Email with the label photo</a><a id="scn-sa-m" href="#">Email Festo – sd.gb@festo.com</a><button type="button" onclick="scanSAClose()">Close</button></div><p class="sa-hint" id="scn-sa-h"><b>Choose Mail.</b> sd.gb@festo.com has been copied – paste it into the To line. The type code and part number are in the email.</p></div></div>');
+  if(!d){document.body.insertAdjacentHTML('beforeend','<div id="scn-sa" role="alertdialog" aria-modal="true" aria-labelledby="scn-sa-t"><div class="sa-bx"><h4 id="scn-sa-t">Special part – not a standard part</h4><p>This type code ends in <b id="scn-sa-x">SA</b>, which means it is a special and not a standard part. Festo will need to quote for it separately.</p><p>Contact Festo with the type code and part number. Extra information such as photos and dimensions will help speed up the quote.</p><dl id="scn-sa-d"></dl><p style="font-size:13px" id="scn-sa-n"></p><div class="sa-bt"><a id="scn-sa-p" href="#" onclick="scanSAShare();return false">Email with the label photo</a><a id="scn-sa-m" href="#">Email Festo – sd.gb@festo.com</a><button type="button" onclick="scanSAClose()">Close</button></div><p class="sa-hint" id="scn-sa-h"><b>sd.gb@festo.com has been copied.</b> In Mail, tap the To line and paste it.</p></div></div>');
     d=$('scn-sa');d.addEventListener('click',function(e){if(e.target===d)scanSAClose()});d.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Escape')scanSAClose()})}
   $('scn-sa-d').innerHTML='<dt>Type code</dt><dd>'+esc(lastSA.type)+'</dd><dt>Part number</dt><dd>'+(lastSA.pn?esc(lastSA.pn):'<span style="font-family:inherit;font-weight:400;color:#5b6b7b">Not read – add it from the label</span>')+'</dd>';
   $('scn-sa-x').textContent=saOf(lastSA.type);
   $('scn-sa-m').href=saMail(lastSA.type,lastSA.pn);
   var sh=canSharePhoto();
   $('scn-sa-p').style.display=sh?'':'none';
-  $('scn-sa-m').className=sh?'sa-2':'';
-  $('scn-sa-m').textContent=sh?'Email without the photo':'Email Festo – sd.gb@festo.com';
-  $('scn-sa-n').textContent=sh?'“Email with the label photo” attaches the photo you scanned. Please add any other photos or dimensions too.':'The scan photo is not added to the email automatically. Please attach it, along with any other photos or dimensions.';
+  $('scn-sa-m').style.display=sh?'none':'';
+  $('scn-sa-n').innerHTML=sh?'<b>Email with the label photo</b> opens your phone’s share menu – choose <b>Mail</b>. The photo and the details are added for you. The Festo address <b>sd.gb@festo.com</b> is copied when you tap, so paste it into the <b>To</b> line, and check the subject. Please add any other photos or dimensions too.':'The scan photo is not added to the email automatically. Please attach it, along with any other photos or dimensions.';
   $('scn-sa-h').style.display='none';
   d.classList.add('on');(sh?$('scn-sa-p'):$('scn-sa-m')).focus();
 };
