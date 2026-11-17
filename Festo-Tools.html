@@ -3267,10 +3267,10 @@ window.scanSA=function(){if(!lastSA)return;var d=$('scn-sa');
   $('scn-sa-d').innerHTML='<dt>Type code</dt><dd>'+esc(lastSA.type)+'</dd><dt>Part number</dt><dd>'+(lastSA.pn?esc(lastSA.pn):'<span style="font-family:inherit;font-weight:400;color:#5b6b7b">Not read – add it from the label</span>')+'</dd>';
   $('scn-sa-x').textContent=saOf(lastSA.type);
   $('scn-sa-m').href=saMail(lastSA.type,lastSA.pn);
-  var sh=canSharePhoto();
+  var sh=false; /* Phil 17 Nov: plain email to sd.gb@festo.com with type code and part number; staff attach the photo themselves */
   $('scn-sa-p').style.display=sh?'':'none';
   $('scn-sa-m').style.display=sh?'none':'';
-  $('scn-sa-n').innerHTML=sh?'<b>Email with the label photo</b> opens your phone’s share menu – choose <b>Mail</b>. The photo and the details are added for you. The Festo address <b>sd.gb@festo.com</b> is copied when you tap, so paste it into the <b>To</b> line, and check the subject. Please add any other photos or dimensions too.':'The scan photo is not added to the email automatically. Please attach it, along with any other photos or dimensions.';
+  $('scn-sa-n').innerHTML=sh?'<b>Email with the label photo</b> opens your phone’s share menu – choose <b>Mail</b>. The photo and the details are added for you. The Festo address <b>sd.gb@festo.com</b> is copied when you tap, so paste it into the <b>To</b> line, and check the subject. Please add any other photos or dimensions too.':'The email opens addressed to sd.gb@festo.com with the type code and part number filled in. Please attach the label photo, along with any other photos or dimensions.';
   $('scn-sa-h').style.display='none';
   d.classList.add('on');(sh?$('scn-sa-p'):$('scn-sa-m')).focus();
 };
