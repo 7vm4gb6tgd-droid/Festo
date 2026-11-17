@@ -3281,8 +3281,15 @@ function group(t,list){return list.length?'<div class="sc-grp2">'+t+'</div><div 
 function show(reads,texts,codes){
   var t=ScanCore.tally(reads),h='',pk=[],rest=[];
   var sp0=t.types.filter(function(x){return isSA(x.c)})[0];lastSA=sp0?{type:sp0.c,pn:(t.nums[0]||{}).c||''}:null;scanSelf(!lastSA);
-  codes.forEach(function(c){var m=/^\s*(https:\/\/pk\.festo\.com\/([A-Za-z0-9]{6,20}))\s*$/i.exec(c);if(m){if(pk.every(function(x){return x.u!==m[1]}))pk.push({u:m[1],k:m[2].toUpperCase()})}else rest.push(c)});
-  if(pk.length)h+='<div class="sc-grp2">Festo product key (2D code)</div>'+pk.map(function(x){return '<a class="sc-pk" href="'+esc(x.u)+'" target="_blank" rel="noopener"><b>Product key</b><code>'+esc(x.k)+'</code><span>Open on Festo – product details and documents →</span></a>'}).join('');
+  /* Text from the 2D code goes first, as a link to Festo.com */
+  function add(o){if(pk.every(function(x){return x.u!==o.u}))pk.push(o)}
+  codes.forEach(function(c){c=String(c).replace(/[\x00-\x1f]+/g,' ').trim();if(!c)return;
+    var m=/^(https?:\/\/pk\.festo\.com\/([A-Za-z0-9]{6,20}))\/?$/i.exec(c);
+    if(m)add({u:'https://pk.festo.com/'+m[2],k:m[2].toUpperCase(),t:'Product key',s:'Open on Festo.com – product details and documents →'});
+    else if(/^https:\/\/([a-z0-9-]+\.)*festo\.com(\/|$)/i.test(c))add({u:c,k:c,t:'Festo link',s:'Open on Festo.com →'});
+    else if(/^[a-z][a-z0-9+.-]*:/i.test(c))rest.push(c);
+    else add({u:feUrl(c),k:c,t:'Text in the code',s:'Search Festo.com for this →'});});
+  if(pk.length)h+='<div class="sc-grp2">From the 2D code</div>'+pk.map(function(x){return '<a class="sc-pk" href="'+esc(x.u)+'" target="_blank" rel="noopener"><b>'+esc(x.t)+'</b><code>'+esc(x.k)+'</code><span>'+esc(x.s)+'</span></a>'}).join('');
   h+=group('Looks like a type code',t.types)+group('Looks like a part number',t.nums)+group('Other numbers on the label',t.other);
   if(rest.length)h+='<div class="sc-grp2">Text in the 2D code</div>'+rest.map(function(c){return '<div class="sc-raw">'+esc(c)+'</div>'}).join('');
   var seen=(texts[0]||'').replace(/\n\s*\n+/g,'\n').trim();
