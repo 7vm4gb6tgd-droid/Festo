@@ -1331,7 +1331,8 @@ window.scanFile=function(inp){
     if(!navigator.onLine){st('No signal. The reader needs the internet to load. You can still type a code below.',true);busy=false;return}
     st('Loading the reader…');
     var reads=[],texts=[],codes=[];
-    readCode(img).then(function(r){codes=r;r.forEach(function(t){reads.push(ScanCore.parse(t))});return readAll(img,reads,texts,me)}).then(function(){
+    /* 2D code reading removed (Phil, 17 Nov 2026) – the label text only */
+    readAll(img,reads,texts,me).then(function(){
       if(me!==run)return;
       var any=show(reads,texts,codes);
       st(any?(lastSA?'This looks like a special ('+saOf(lastSA.type)+'). Check it matches the label.':'Check the result matches the label, then tap Search RS or Search Festo.'):'Could not read a code. Try again closer to the label, with less glare, or type it below.',!any);
