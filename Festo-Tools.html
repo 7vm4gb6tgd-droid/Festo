@@ -561,6 +561,12 @@ table.sz td.vsl{color:var(--mute);font-weight:600;background:#f6f9fd}
 #scn .sc-hit.sc-spec{border:2px solid #e2001a}
 #scn .sc-sab{display:inline-block;background:#e2001a;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:6px;padding:2px 6px;margin-bottom:4px}
 #scn .sc-hb button.sc-sa{flex:1 1 0;min-height:42px;border-radius:21px;background:#fff;color:#e2001a;border:2px solid #e2001a;font-size:15px;padding:0 10px}
+#scn .sc-pk{display:block;border:2px solid var(--blue);border-radius:12px;padding:10px 12px;margin:0 0 4px;text-decoration:none;background:#eef7fd}
+#scn .sc-pk b{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#5b6b7b;margin-bottom:2px}
+#scn .sc-pk code{display:block;font:700 18px/1.3 ui-monospace,Menlo,Consolas,monospace;color:#111d2c;word-break:break-all}
+#scn .sc-pk span{display:block;margin-top:4px;font-size:14px;font-weight:700;color:var(--blue)}
+#scn-sa .sa-bt a.sa-2{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+#scn-sa .sa-hint{display:none;font-size:13px;background:#fff5d6;border-radius:8px;padding:8px 10px;margin:8px 0 0;color:#5a4500}
 #scn-sa{position:fixed;inset:0;z-index:60;background:rgba(11,31,51,.6);display:none;align-items:center;justify-content:center;padding:max(16px,calc(env(safe-area-inset-top,0px) + 20px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
 #scn-sa.on{display:flex}
 #scn-sa .sa-bx{background:#fff;color:#111d2c;width:100%;max-width:440px;max-height:100%;overflow-y:auto;border-radius:18px;border-top:6px solid #e2001a;padding:18px 18px 16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
@@ -3239,26 +3245,44 @@ function load(src){return new Promise(function(ok,no){var s=document.createEleme
 var libs={};
 function need(k,src,test){if(test())return Promise.resolve();if(!libs[k])libs[k]=load(src).catch(function(e){libs[k]=null;throw e});return libs[k]}
 /* A type code whose last part is SA is a Festo special: not a standard part, Festo quotes for it separately */
-var SA_MAIL='sd.gb@festo.com',lastSA=null;
-function isSA(c){return /-SA$/.test(c)}
-function hit(x){var sp=isSA(x.c);return '<div class="sc-hit'+(sp?' sc-spec':'')+'">'+(sp?'<span class="sc-sab">SPECIAL (SA)</span>':'')+'<div class="sc-hc"><code>'+esc(x.c)+'</code><button type="button" onclick="scanEdit(this)" aria-label="Edit '+esc(x.c)+'">Edit</button></div><div class="sc-hb">'+(sp?'<button type="button" class="sc-sa" onclick="scanSA()">Special: what to do</button>':'<a class="sc-feb" href="'+feUrl(x.c)+'" target="_blank" rel="noopener">Search Festo</a>')+'</div></div>'}
-function saMail(type,pn){
-  var sub='Special part quote request: '+type+(pn?' ('+pn+')':'');
-  var body='Hello,\n\nPlease can you quote for this special part (SA):\n\nType code: '+type+'\nPart number: '+(pn||'')+'\nQuantity: \nCustomer: \n\nPhotos, dimensions and any other details are attached.\n\nThank you';
-  return 'mailto:'+SA_MAIL+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body);
-}
+var SA_MAIL='sd.gb@festo.com',lastSA=null,lastFile=null;
+function isSA(c){return /-(SA|CS)$/.test(c)}
+function saOf(c){var m=/-(SA|CS)$/.exec(c);return m?m[1]:''}
+function hit(x){var sp=isSA(x.c);return '<div class="sc-hit'+(sp?' sc-spec':'')+'">'+(sp?'<span class="sc-sab">SPECIAL ('+saOf(x.c)+')</span>':'')+'<div class="sc-hc"><code>'+esc(x.c)+'</code><button type="button" onclick="scanEdit(this)" aria-label="Edit '+esc(x.c)+'">Edit</button></div><div class="sc-hb">'+(sp?'<button type="button" class="sc-sa" onclick="scanSA()">Special: what to do</button>':'<a class="sc-feb" href="'+feUrl(x.c)+'" target="_blank" rel="noopener">Search Festo</a>')+'</div></div>'}
+function saSub(type,pn){return 'Special part quote request: '+type+(pn?' ('+pn+')':'')}
+function saBody(type,pn){return 'Hello,\n\nPlease can you quote for this special part ('+saOf(type)+'):\n\nType code: '+type+'\nPart number: '+(pn||'')+'\nQuantity: \nCustomer: \n\nPhotos, dimensions and any other details are attached.\n\nThank you'}
+function saMail(type,pn){return 'mailto:'+SA_MAIL+'?subject='+encodeURIComponent(saSub(type,pn))+'&body='+encodeURIComponent(saBody(type,pn))}
+/* Phones can't add an attachment to a mailto link. Sharing the photo opens the phone's share sheet;
+   picking Mail gives a new email with the photo attached and the details in the text. The address is copied so it can be pasted into To. */
+function canSharePhoto(){try{return !!(lastFile&&navigator.share&&navigator.canShare&&navigator.canShare({files:[lastFile]}))}catch(e){return false}}
+window.scanSAShare=function(){
+  if(!lastSA||!canSharePhoto())return;
+  try{if(navigator.clipboard)navigator.clipboard.writeText(SA_MAIL).catch(function(){})}catch(e){}
+  $('scn-sa-h').style.display='block';
+  navigator.share({files:[lastFile],title:saSub(lastSA.type,lastSA.pn),text:'To: '+SA_MAIL+'\nSubject: '+saSub(lastSA.type,lastSA.pn)+'\n\n'+saBody(lastSA.type,lastSA.pn)}).catch(function(){});
+};
 window.scanSA=function(){if(!lastSA)return;var d=$('scn-sa');
-  if(!d){document.body.insertAdjacentHTML('beforeend','<div id="scn-sa" role="alertdialog" aria-modal="true" aria-labelledby="scn-sa-t"><div class="sa-bx"><h4 id="scn-sa-t">Special part – not a standard part</h4><p>This type code ends in <b>SA</b>, which means it is a special and not a standard part. Festo will need to quote for it separately.</p><p>Contact Festo with the type code and part number. Extra information such as photos and dimensions will help speed up the quote.</p><dl id="scn-sa-d"></dl><p style="font-size:13px">The scan photo is not added to the email automatically. Please attach it, along with any other photos or dimensions.</p><div class="sa-bt"><a id="scn-sa-m" href="#">Email Festo – sd.gb@festo.com</a><button type="button" onclick="scanSAClose()">Close</button></div></div></div>');
+  if(!d){document.body.insertAdjacentHTML('beforeend','<div id="scn-sa" role="alertdialog" aria-modal="true" aria-labelledby="scn-sa-t"><div class="sa-bx"><h4 id="scn-sa-t">Special part – not a standard part</h4><p>This type code ends in <b id="scn-sa-x">SA</b>, which means it is a special and not a standard part. Festo will need to quote for it separately.</p><p>Contact Festo with the type code and part number. Extra information such as photos and dimensions will help speed up the quote.</p><dl id="scn-sa-d"></dl><p style="font-size:13px" id="scn-sa-n"></p><div class="sa-bt"><a id="scn-sa-p" href="#" onclick="scanSAShare();return false">Email with the label photo</a><a id="scn-sa-m" href="#">Email Festo – sd.gb@festo.com</a><button type="button" onclick="scanSAClose()">Close</button></div><p class="sa-hint" id="scn-sa-h"><b>Choose Mail.</b> sd.gb@festo.com has been copied – paste it into the To line. The type code and part number are in the email.</p></div></div>');
     d=$('scn-sa');d.addEventListener('click',function(e){if(e.target===d)scanSAClose()});d.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Escape')scanSAClose()})}
   $('scn-sa-d').innerHTML='<dt>Type code</dt><dd>'+esc(lastSA.type)+'</dd><dt>Part number</dt><dd>'+(lastSA.pn?esc(lastSA.pn):'<span style="font-family:inherit;font-weight:400;color:#5b6b7b">Not read – add it from the label</span>')+'</dd>';
+  $('scn-sa-x').textContent=saOf(lastSA.type);
   $('scn-sa-m').href=saMail(lastSA.type,lastSA.pn);
-  d.classList.add('on');$('scn-sa-m').focus();
+  var sh=canSharePhoto();
+  $('scn-sa-p').style.display=sh?'':'none';
+  $('scn-sa-m').className=sh?'sa-2':'';
+  $('scn-sa-m').textContent=sh?'Email without the photo':'Email Festo – sd.gb@festo.com';
+  $('scn-sa-n').textContent=sh?'“Email with the label photo” attaches the photo you scanned. Please add any other photos or dimensions too.':'The scan photo is not added to the email automatically. Please attach it, along with any other photos or dimensions.';
+  $('scn-sa-h').style.display='none';
+  d.classList.add('on');(sh?$('scn-sa-p'):$('scn-sa-m')).focus();
 };
 window.scanSAClose=function(){var d=$('scn-sa');if(d)d.classList.remove('on')};
 function group(t,list){return list.length?'<div class="sc-grp2">'+t+'</div><div class="sc-rs2">'+list.map(hit).join('')+'</div>':''}
 function show(reads,texts,codes){
-  var t=ScanCore.tally(reads),h=group('Looks like a type code',t.types)+group('Looks like a part number',t.nums)+group('Other numbers on the label',t.other);
-  if(codes.length)h+='<div class="sc-grp2">Text in the 2D code</div>'+codes.map(function(c){return '<div class="sc-raw">'+esc(c)+'</div>'}).join('');
+  var t=ScanCore.tally(reads),h='',pk=[],rest=[];
+  codes.forEach(function(c){var m=/^\s*(https:\/\/pk\.festo\.com\/([A-Za-z0-9]{6,20}))\s*$/i.exec(c);if(m){if(pk.every(function(x){return x.u!==m[1]}))pk.push({u:m[1],k:m[2].toUpperCase()})}else rest.push(c)});
+  if(pk.length)h+='<div class="sc-grp2">Festo product key (2D code)</div>'+pk.map(function(x){return '<a class="sc-pk" href="'+esc(x.u)+'" target="_blank" rel="noopener"><b>Product key</b><code>'+esc(x.k)+'</code><span>Open on Festo – product details and documents →</span></a>'}).join('');
+  h+=group('Looks like a type code',t.types)+group('Looks like a part number',t.nums)+group('Other numbers on the label',t.other);
+  if(rest.length)h+='<div class="sc-grp2">Text in the 2D code</div>'+rest.map(function(c){return '<div class="sc-raw">'+esc(c)+'</div>'}).join('');
   var seen=(texts[0]||'').replace(/\n\s*\n+/g,'\n').trim();
   if(seen)h+='<details><summary>Show all the text it read</summary><pre>'+esc(seen)+'</pre></details>';
   $('scn-out').innerHTML=h;
@@ -3267,10 +3291,22 @@ function show(reads,texts,codes){
   if(lastSA)setTimeout(scanSA,0);
   var first=(t.nums[0]||t.types[0]||{}).c;
   if(first&&!$('scn-q').value){$('scn-q').value=first;scanMan()}
-  return !!(t.types.length||t.nums.length);
+  return !!(t.types.length||t.nums.length||pk.length);
 }
 function free(c){try{c.width=c.height=0}catch(e){}}
+function zxAt(img,S){
+  return need('zx',ZX_JS,function(){return !!window.ZXingWASM}).then(function(){
+    var c=ScanCore.sized(img,S),d=c.getContext('2d').getImageData(0,0,c.width,c.height);free(c);
+    return ZXingWASM.readBarcodes(d,{formats:['DataMatrix','QRCode'],tryHarder:true,maxNumberOfSymbols:4});
+  }).then(function(r){return (r||[]).filter(function(x){return x&&x.text}).map(function(x){return x.text})}).catch(function(){return []});
+}
 function readCode(img){
+  return readCode1(img).then(function(r){
+    var L=Math.max(img.naturalWidth||0,img.naturalHeight||0);
+    return r.length||L<2200?r:zxAt(img,Math.min(L,3000));
+  });
+}
+function readCode1(img){
   var c=ScanCore.sized(img,1600),done=function(r){free(c);return r};
   var viaNative=function(){if(!('BarcodeDetector' in window))return Promise.resolve([]);try{return new BarcodeDetector({formats:['data_matrix','qr_code']}).detect(c).then(function(r){return r.map(function(x){return x.rawValue})}).catch(function(){return []})}catch(e){return Promise.resolve([])}};
   return viaNative().then(function(r){
@@ -3300,6 +3336,7 @@ function readAll(img,reads,texts,me){
 }
 window.scanFile=function(inp){
   var f=inp.files&&inp.files[0];inp.value='';if(!f||busy)return;
+  lastFile=f;
   busy=true;var me=++run;lastSA=null;scanSAClose();$('scn-out').innerHTML='';$('scn-q').value='';scanMan();
   var img=$('scn-img');
   img.onload=function(){
@@ -3311,7 +3348,7 @@ window.scanFile=function(inp){
     readCode(img).then(function(r){codes=r;r.forEach(function(t){reads.push(ScanCore.parse(t))});return readAll(img,reads,texts,me)}).then(function(){
       if(me!==run)return;
       var any=show(reads,texts,codes);
-      st(any?(lastSA?'This looks like a special (SA). Check it matches the label.':'Check the result matches the label, then tap Search Festo.'):'Could not read a code. Try again closer to the label, with less glare, or type it below.',!any);
+      st(any?(lastSA?'This looks like a special ('+saOf(lastSA.type)+'). Check it matches the label.':'Check the result matches the label, then tap Search Festo.'):'Could not read a code. Try again closer to the label, with less glare, or type it below.',!any);
     }).catch(function(){
       if(me!==run)return;
       var any=show(reads,texts,codes);
