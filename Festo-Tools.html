@@ -558,6 +558,21 @@ table.sz td.vsl{color:var(--mute);font-weight:600;background:#f6f9fd}
 #scn .sc-hb a,#scn .sc-man2 a{flex:1 1 0;display:flex;align-items:center;justify-content:center;min-height:42px;color:#fff;font-weight:700;font-size:15px;border-radius:21px;padding:0 10px;text-decoration:none;white-space:nowrap}
 #scn a.sc-feb{background:var(--blue)}
 #scn .sc-hit button{flex:none;background:#eef3f8;border:0;border-radius:20px;padding:9px 11px;font-weight:700;font-size:13px;color:var(--navy);cursor:pointer}
+#scn .sc-hit.sc-spec{border:2px solid #e2001a}
+#scn .sc-sab{display:inline-block;background:#e2001a;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:6px;padding:2px 6px;margin-bottom:4px}
+#scn .sc-hb button.sc-sa{flex:1 1 0;min-height:42px;border-radius:21px;background:#fff;color:#e2001a;border:2px solid #e2001a;font-size:15px;padding:0 10px}
+#scn-sa{position:fixed;inset:0;z-index:60;background:rgba(11,31,51,.6);display:none;align-items:center;justify-content:center;padding:max(16px,calc(env(safe-area-inset-top,0px) + 20px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
+#scn-sa.on{display:flex}
+#scn-sa .sa-bx{background:#fff;color:#111d2c;width:100%;max-width:440px;max-height:100%;overflow-y:auto;border-radius:18px;border-top:6px solid #e2001a;padding:18px 18px 16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#scn-sa h4{margin:0 0 8px;font-size:20px;font-weight:800;color:#e2001a}
+#scn-sa p{margin:0 0 10px;font-size:15px;line-height:1.4;color:#33414f}
+#scn-sa dl{margin:0 0 12px;background:#f4f7fa;border-radius:10px;padding:8px 12px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+#scn-sa dt{color:#5b6b7b;font-weight:700}
+#scn-sa dd{margin:0;font:700 15px/1.3 ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+#scn-sa .sa-bt{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+#scn-sa .sa-bt a,#scn-sa .sa-bt button{display:flex;align-items:center;justify-content:center;min-height:46px;border-radius:23px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;font-family:inherit}
+#scn-sa .sa-bt a{background:var(--blue);color:#fff;border:0}
+#scn-sa .sa-bt button{background:#eef3f8;color:var(--navy);border:0}
 #scn .sc-raw{font:12px/1.35 ui-monospace,Menlo,Consolas,monospace;background:#f4f7fa;border-radius:8px;padding:8px 10px;word-break:break-all;color:#33414f}
 #scn .sc-man{display:flex;margin-top:6px}
 #scn .sc-man2{display:flex;gap:8px;margin-top:8px}
@@ -3223,7 +3238,23 @@ function st(t,err){var e=$('scn-st');e.textContent=t||'';e.style.display=t?'bloc
 function load(src){return new Promise(function(ok,no){var s=document.createElement('script');s.src=src;s.async=true;s.onload=ok;s.onerror=function(){no(new Error('load'))};document.head.appendChild(s)})}
 var libs={};
 function need(k,src,test){if(test())return Promise.resolve();if(!libs[k])libs[k]=load(src).catch(function(e){libs[k]=null;throw e});return libs[k]}
-function hit(x){return '<div class="sc-hit"><div class="sc-hc"><code>'+esc(x.c)+'</code><button type="button" onclick="scanEdit(this)" aria-label="Edit '+esc(x.c)+'">Edit</button></div><div class="sc-hb"><a class="sc-feb" href="'+feUrl(x.c)+'" target="_blank" rel="noopener">Search Festo</a></div></div>'}
+/* A type code whose last part is SA is a Festo special: not a standard part, Festo quotes for it separately */
+var SA_MAIL='sd.gb@festo.com',lastSA=null;
+function isSA(c){return /-SA$/.test(c)}
+function hit(x){var sp=isSA(x.c);return '<div class="sc-hit'+(sp?' sc-spec':'')+'">'+(sp?'<span class="sc-sab">SPECIAL (SA)</span>':'')+'<div class="sc-hc"><code>'+esc(x.c)+'</code><button type="button" onclick="scanEdit(this)" aria-label="Edit '+esc(x.c)+'">Edit</button></div><div class="sc-hb">'+(sp?'<button type="button" class="sc-sa" onclick="scanSA()">Special: what to do</button>':'<a class="sc-feb" href="'+feUrl(x.c)+'" target="_blank" rel="noopener">Search Festo</a>')+'</div></div>'}
+function saMail(type,pn){
+  var sub='Special part quote request: '+type+(pn?' ('+pn+')':'');
+  var body='Hello,\n\nPlease can you quote for this special part (SA):\n\nType code: '+type+'\nPart number: '+(pn||'')+'\nQuantity: \nCustomer: \n\nPhotos, dimensions and any other details are attached.\n\nThank you';
+  return 'mailto:'+SA_MAIL+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body);
+}
+window.scanSA=function(){if(!lastSA)return;var d=$('scn-sa');
+  if(!d){document.body.insertAdjacentHTML('beforeend','<div id="scn-sa" role="alertdialog" aria-modal="true" aria-labelledby="scn-sa-t"><div class="sa-bx"><h4 id="scn-sa-t">Special part – not a standard part</h4><p>This type code ends in <b>SA</b>, so it is a special. It is not a standard part, so Festo has to quote for it separately.</p><p>Contact Festo with the type code and part number. Extra information such as photos and dimensions will help speed up the quote.</p><dl id="scn-sa-d"></dl><p style="font-size:13px">The email does not include the scan photo, so attach it yourself along with any other photos or dimensions.</p><div class="sa-bt"><a id="scn-sa-m" href="#">Email Festo – sd.gb@festo.com</a><button type="button" onclick="scanSAClose()">Close</button></div></div></div>');
+    d=$('scn-sa');d.addEventListener('click',function(e){if(e.target===d)scanSAClose()});d.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Escape')scanSAClose()})}
+  $('scn-sa-d').innerHTML='<dt>Type code</dt><dd>'+esc(lastSA.type)+'</dd><dt>Part number</dt><dd>'+(lastSA.pn?esc(lastSA.pn):'<span style="font-family:inherit;font-weight:400;color:#5b6b7b">Not read – add it from the label</span>')+'</dd>';
+  $('scn-sa-m').href=saMail(lastSA.type,lastSA.pn);
+  d.classList.add('on');$('scn-sa-m').focus();
+};
+window.scanSAClose=function(){var d=$('scn-sa');if(d)d.classList.remove('on')};
 function group(t,list){return list.length?'<div class="sc-grp2">'+t+'</div><div class="sc-rs2">'+list.map(hit).join('')+'</div>':''}
 function show(reads,texts,codes){
   var t=ScanCore.tally(reads),h=group('Looks like a type code',t.types)+group('Looks like a part number',t.nums)+group('Other numbers on the label',t.other);
@@ -3231,6 +3262,9 @@ function show(reads,texts,codes){
   var seen=(texts[0]||'').replace(/\n\s*\n+/g,'\n').trim();
   if(seen)h+='<details><summary>Show all the text it read</summary><pre>'+esc(seen)+'</pre></details>';
   $('scn-out').innerHTML=h;
+  var sp=t.types.filter(function(x){return isSA(x.c)})[0];
+  lastSA=sp?{type:sp.c,pn:(t.nums[0]||{}).c||''}:null;
+  if(lastSA)setTimeout(scanSA,0);
   var first=(t.nums[0]||t.types[0]||{}).c;
   if(first&&!$('scn-q').value){$('scn-q').value=first;scanMan()}
   return !!(t.types.length||t.nums.length);
@@ -3266,7 +3300,7 @@ function readAll(img,reads,texts,me){
 }
 window.scanFile=function(inp){
   var f=inp.files&&inp.files[0];inp.value='';if(!f||busy)return;
-  busy=true;var me=++run;$('scn-out').innerHTML='';$('scn-q').value='';scanMan();
+  busy=true;var me=++run;lastSA=null;scanSAClose();$('scn-out').innerHTML='';$('scn-q').value='';scanMan();
   var img=$('scn-img');
   img.onload=function(){
     if(me!==run)return;
@@ -3277,7 +3311,7 @@ window.scanFile=function(inp){
     readCode(img).then(function(r){codes=r;r.forEach(function(t){reads.push(ScanCore.parse(t))});return readAll(img,reads,texts,me)}).then(function(){
       if(me!==run)return;
       var any=show(reads,texts,codes);
-      st(any?'Check the result matches the label, then tap Search Festo.':'Could not read a code. Try again closer to the label, with less glare, or type it below.',!any);
+      st(any?(lastSA?'This looks like a special (SA). Check it matches the label.':'Check the result matches the label, then tap Search Festo.'):'Could not read a code. Try again closer to the label, with less glare, or type it below.',!any);
     }).catch(function(){
       if(me!==run)return;
       var any=show(reads,texts,codes);
@@ -3290,7 +3324,7 @@ window.scanFile=function(inp){
 window.scanEdit=function(b){var c=b.parentNode.querySelector('code').textContent;var q=$('scn-q');q.value=c;scanMan();q.focus()};
 window.scanMan=function(){var v=$('scn-q').value.trim();$('scn-fe').href=v?feUrl(v):'https://www.festo.com/gb/en/'};
 window.scanOpen=function(){$('scn').classList.add('on');$('scn-bd').scrollTop=0;document.addEventListener('keydown',escKey)};
-window.scanClose=function(){$('scn').classList.remove('on');document.removeEventListener('keydown',escKey)};
+window.scanClose=function(){scanSAClose();$('scn').classList.remove('on');document.removeEventListener('keydown',escKey)};
 function escKey(e){if(e.key==='Escape')scanClose()}
 $('scn').addEventListener('click',function(e){if(e.target===this)scanClose()});
 $('scn-q').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('scn-fe').click()}});
